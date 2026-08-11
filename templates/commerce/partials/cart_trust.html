@@ -1,0 +1,23 @@
+{% load catalog_tags %}
+{% if trust_badges %}
+<ul class="cart-trust" aria-label="{% if current_locale == 'en' %}Guarantees and payment{% else %}Гарантії та оплата{% endif %}">
+  {% for badge in trust_badges %}
+  <li class="cart-trust__item cart-trust__item--{{ badge.badge_type }}">
+    {% if badge.image %}
+    <img
+      class="cart-trust__img"
+      src="{{ badge.image.url }}"
+      alt="{% loc badge 'label' %}"
+      width="48"
+      height="28"
+      loading="lazy"
+      decoding="async"
+    >
+    {% else %}
+    <span class="cart-trust__mark cart-trust__mark--{{ badge.badge_type }}" aria-hidden="true"></span>
+    {% endif %}
+    <span class="cart-trust__label">{% loc badge 'label' %}</span>
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}

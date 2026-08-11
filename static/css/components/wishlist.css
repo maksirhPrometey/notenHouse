@@ -1,0 +1,43 @@
+/* NotenHaus — wishlist toggle button (PDP + product grid) */
+
+.wishlist-action {
+  margin-top: 0.65rem;
+}
+
+.wishlist-btn {
+  min-height: 2.75rem;
+  padding: 0.55rem 1rem;
+  font-size: 0.92rem;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wishlist-btn__icon {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.wishlist-btn--active {
+  border-color: var(--color-brand);
+  color: var(--color-brand);
+}
+
+.wishlist-btn--active:hover,
+.wishlist-btn--active:focus-visible {
+  background: var(--color-bg-muted);
+  color: var(--color-brand);
+}
+
+.product-card__wishlist-remove {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.product-card__wishlist-remove > .btn {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .wishlist-btn {
+    padding: 0.6rem 1.35rem;
+  }
+}

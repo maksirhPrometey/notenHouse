@@ -1,0 +1,31 @@
+{% load site_content catalog_tags %}
+<div class="cart-summary" data-cart-summary>
+  <h2 class="cart-summary__title">{% block_plain 'cart' 'summary_heading' %}</h2>
+
+  <dl class="cart-summary__rows">
+    <div class="cart-summary__row">
+      <dt>{% block_plain 'cart' 'summary_items' %}</dt>
+      <dd>{{ items_qty }}</dd>
+    </div>
+    <div class="cart-summary__row">
+      <dt>{% block_plain 'cart' 'summary_heading' %}</dt>
+      <dd>{{ total }}&nbsp;₴</dd>
+    </div>
+    <div class="cart-summary__row cart-summary__row--total">
+      <dt>{% block_plain 'cart' 'summary_total' %}</dt>
+      <dd><strong>{{ total }}&nbsp;₴</strong></dd>
+    </div>
+  </dl>
+
+  <a
+    class="btn btn--cta cart-summary__checkout"
+    href="{% url 'commerce:checkout' %}"
+  >{% loc cart_settings 'checkout_label' %}&nbsp;→</a>
+
+  <a
+    class="btn cart__btn-navy cart-summary__continue"
+    href="{% url 'catalog:katalog' %}"
+  >{% loc cart_settings 'continue_shopping_label' %}</a>
+
+  {% include "commerce/partials/cart_trust.html" %}
+</div>

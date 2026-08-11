@@ -1,0 +1,178 @@
+{# Mega-menu / split catalog — дані з БД (instrument, genre, composer, level) #}
+{% load site_content catalog_tags %}
+<div
+  class="mega-menu"
+  id="catalog-panel"
+  hidden
+  role="region"
+  aria-label="{% block_plain 'site' 'mega_title' %}"
+>
+  <div class="mega-menu__backdrop" data-mega-close tabindex="-1"></div>
+  <div class="mega-menu__panel" role="dialog" aria-modal="true" aria-labelledby="mega-menu-title">
+    <div class="mega-menu__chrome">
+      <h2 class="mega-menu__title" id="mega-menu-title">{% block_plain 'site' 'mega_title' %}</h2>
+      <a class="mega-menu__all" href="{% url 'catalog:katalog' %}">{% block_plain 'site' 'mega_all' %}</a>
+      <button type="button" class="mega-menu__close" data-mega-close aria-label="{% block_plain 'site' 'mega_close' %}">×</button>
+    </div>
+
+    <div class="mega-menu__split">
+      <nav class="mega-menu__sidebar" aria-label="{% block_plain 'site' 'mega_title' %}">
+        <ul class="mega-menu__cats" role="tablist" aria-orientation="vertical">
+          <li>
+            <button
+              type="button"
+              class="mega-menu__cat is-active"
+              role="tab"
+              id="mega-tab-instruments"
+              aria-selected="true"
+              aria-controls="mega-panel-instruments"
+              data-mega-tab="instruments"
+            >
+              <span class="mega-menu__cat-label">{% block_plain 'site' 'mega_instruments' %}</span>
+              <span class="mega-menu__cat-notes" aria-hidden="true">
+                <span class="mega-menu__note">♪</span>
+                <span class="mega-menu__note mega-menu__note--delay">♫</span>
+              </span>
+              <span class="mega-menu__chevron" aria-hidden="true">›</span>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="mega-menu__cat"
+              role="tab"
+              id="mega-tab-genres"
+              aria-selected="false"
+              aria-controls="mega-panel-genres"
+              data-mega-tab="genres"
+            >
+              <span class="mega-menu__cat-label">{% block_plain 'site' 'mega_genres' %}</span>
+              <span class="mega-menu__cat-notes" aria-hidden="true">
+                <span class="mega-menu__note">♩</span>
+                <span class="mega-menu__note mega-menu__note--delay">♬</span>
+              </span>
+              <span class="mega-menu__chevron" aria-hidden="true">›</span>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="mega-menu__cat"
+              role="tab"
+              id="mega-tab-composers"
+              aria-selected="false"
+              aria-controls="mega-panel-composers"
+              data-mega-tab="composers"
+            >
+              <span class="mega-menu__cat-label">{% block_plain 'site' 'mega_composers' %}</span>
+              <span class="mega-menu__cat-notes" aria-hidden="true">
+                <span class="mega-menu__note">♪</span>
+                <span class="mega-menu__note mega-menu__note--delay">♩</span>
+              </span>
+              <span class="mega-menu__chevron" aria-hidden="true">›</span>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="mega-menu__cat"
+              role="tab"
+              id="mega-tab-levels"
+              aria-selected="false"
+              aria-controls="mega-panel-levels"
+              data-mega-tab="levels"
+            >
+              <span class="mega-menu__cat-label">{% block_plain 'site' 'mega_levels' %}</span>
+              <span class="mega-menu__cat-notes" aria-hidden="true">
+                <span class="mega-menu__note">♫</span>
+                <span class="mega-menu__note mega-menu__note--delay">♪</span>
+              </span>
+              <span class="mega-menu__chevron" aria-hidden="true">›</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="mega-menu__content">
+        <div
+          class="mega-menu__pane is-active"
+          role="tabpanel"
+          id="mega-panel-instruments"
+          aria-labelledby="mega-tab-instruments"
+          data-mega-pane="instruments"
+        >
+          <h3 class="mega-menu__pane-title">{% block_plain 'site' 'mega_instruments' %}</h3>
+          <ul class="mega-menu__links">
+            {% for item in nav_instruments %}
+            <li>
+              <a href="{% url 'catalog:katalog_slug' item.slug %}">{% loc item %}</a>
+            </li>
+            {% empty %}
+            <li class="mega-menu__empty">{% block_plain 'site' 'mega_empty' %}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div
+          class="mega-menu__pane"
+          role="tabpanel"
+          id="mega-panel-genres"
+          aria-labelledby="mega-tab-genres"
+          data-mega-pane="genres"
+          hidden
+        >
+          <h3 class="mega-menu__pane-title">{% block_plain 'site' 'mega_genres' %}</h3>
+          <ul class="mega-menu__links">
+            {% for item in nav_genres %}
+            <li>
+              <a href="{% url 'catalog:katalog_slug' item.slug %}">{% loc item %}</a>
+            </li>
+            {% empty %}
+            <li class="mega-menu__empty">{% block_plain 'site' 'mega_empty' %}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div
+          class="mega-menu__pane"
+          role="tabpanel"
+          id="mega-panel-composers"
+          aria-labelledby="mega-tab-composers"
+          data-mega-pane="composers"
+          hidden
+        >
+          <h3 class="mega-menu__pane-title">{% block_plain 'site' 'mega_composers' %}</h3>
+          <ul class="mega-menu__links">
+            {% for item in nav_composers %}
+            <li>
+              <a href="{% url 'catalog:katalog' %}?composer={{ item.slug }}">{% loc item %}</a>
+            </li>
+            {% empty %}
+            <li class="mega-menu__empty">{% block_plain 'site' 'mega_empty' %}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div
+          class="mega-menu__pane"
+          role="tabpanel"
+          id="mega-panel-levels"
+          aria-labelledby="mega-tab-levels"
+          data-mega-pane="levels"
+          hidden
+        >
+          <h3 class="mega-menu__pane-title">{% block_plain 'site' 'mega_levels' %}</h3>
+          <ul class="mega-menu__links">
+            {% for item in nav_levels %}
+            <li>
+              <a href="{% url 'catalog:katalog' %}?level={{ item.slug }}">{% loc item %}</a>
+            </li>
+            {% empty %}
+            <li class="mega-menu__empty">{% block_plain 'site' 'mega_empty' %}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

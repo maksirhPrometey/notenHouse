@@ -1,0 +1,13 @@
+<a class="site-logo{% if logo_class %} {{ logo_class }}{% endif %}" href="{% url 'core:home' %}">
+  {% if site_logo %}
+  <img
+    class="site-logo__img"
+    src="{{ site_logo.url }}"
+    alt=""
+    width="40"
+    height="39"
+    decoding="async"
+  >
+  {% endif %}
+  <span class="site-logo__text">{{ site_name }}</span>
+</a>

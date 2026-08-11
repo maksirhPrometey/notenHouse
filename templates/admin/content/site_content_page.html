@@ -1,0 +1,78 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/admin/site_content.css' %}">
+  <style>
+    .site-content-editor__file input[type="file"] {
+      color: var(--color-base-100, #f3f4f6);
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="site-content-editor__wrap">
+  <header class="site-content-editor__head">
+    <div>
+      <h1 class="site-content-editor__title">{{ section.title }}</h1>
+      {% if section.description %}
+      <p class="site-content-editor__desc">{{ section.description }}</p>
+      {% endif %}
+    </div>
+    {% if preview_url %}
+    <a class="site-content-editor__preview" href="{{ preview_url }}" target="_blank" rel="noopener">
+      Переглянути на сайті
+    </a>
+    {% endif %}
+  </header>
+
+  <form method="post" enctype="multipart/form-data" class="site-content-editor__form">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+    <div class="site-content-editor__errors">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    {% if form.section_visible %}
+    <fieldset class="site-content-editor__fieldset">
+      <legend>Видимість</legend>
+      <div class="site-content-editor__field">
+        {{ form.section_visible.label_tag }}
+        {{ form.section_visible }}
+      </div>
+    </fieldset>
+    {% endif %}
+
+    <fieldset class="site-content-editor__fieldset">
+      <legend>Поля</legend>
+      {% for field in form %}
+        {% if field.name != 'section_visible' %}
+        <div class="site-content-editor__field {% if 'image' in field.name %}site-content-editor__file{% endif %}">
+          {{ field.label_tag }}
+          {{ field }}
+          {% if field.help_text %}<p class="site-content-editor__hint">{{ field.help_text }}</p>{% endif %}
+          {% if field.errors %}<div class="site-content-editor__errors">{{ field.errors }}</div>{% endif %}
+        </div>
+        {% endif %}
+      {% endfor %}
+    </fieldset>
+
+    {% if hero_formset %}
+    {% include "admin/content/hero_slides_fieldset.html" %}
+    {% endif %}
+
+    <div class="site-content-editor__actions">
+      <button type="submit" class="site-content-editor__save">Зберегти</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block footer %}
+  {{ block.super }}
+  {% if hero_formset %}
+  <script src="{% static 'js/admin/hero_slides.js' %}"></script>
+  {% endif %}
+{% endblock %}

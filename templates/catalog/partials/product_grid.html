@@ -1,0 +1,106 @@
+{% load catalog_tags site_content %}
+<ul class="product-grid{% if grid_cols %} product-grid--cols-{{ grid_cols }}{% endif %}">
+  {% for product in products %}
+  <li class="product-grid__item">
+    <article class="product-card">
+      <a class="product-card__link" href="{% url 'catalog:nota_detail' product.slug %}">
+        <div class="product-card__media">
+          {% loc product as product_name %}
+          {% with img=product.main_images.0 %}
+            {% if img %}
+            {% loc img 'alt' as img_alt %}
+            <img
+              class="product-card__img"
+              src="{{ img.image.url }}"
+              alt="{{ img_alt|default:product_name }}"
+              width="240"
+              height="320"
+              loading="lazy"
+              decoding="async"
+            >
+            {% else %}
+            <div class="product-card__placeholder" aria-hidden="true"></div>
+            {% endif %}
+          {% endwith %}
+          {% if product.badge_text %}
+          <span class="product-card__badge product-card__badge--{{ product.badge_tone|default:'yellow' }}">
+            {{ product.badge_text }}
+          </span>
+          {% endif %}
+        </div>
+        <h3 class="product-card__title">{{ product_name }}</h3>
+        {% if product.composer %}
+        <p class="product-card__meta">{% loc product.composer %}</p>
+        {% endif %}
+        {% with instruments=product.instruments.all %}
+          {% if instruments %}
+          <p class="product-card__instruments">
+            {% for inst in instruments %}
+            <span class="product-card__inst-badge">{% loc inst %}</span>
+            {% endfor %}
+          </p>
+          {% endif %}
+        {% endwith %}
+        {% if product.format %}
+        <p class="product-card__code">{% loc product.format %}</p>
+        {% endif %}
+        <p class="product-card__price">{{ product.price_uah }}&nbsp;₴</p>
+      </a>
+      <div class="product-card__actions">
+        {% if product.is_in_stock %}
+          {% if product.id in cart_product_ids %}
+          <div id="cart-action-{{ product.id }}" class="product-card__cart-form">
+            <a
+              href="{% url 'commerce:cart' %}"
+              class="btn btn--ghost product-card__btn"
+            >{% block_plain 'catalog' 'in_cart' %}</a>
+          </div>
+          {% else %}
+          <div id="cart-action-{{ product.id }}" class="product-card__cart-form">
+            <form
+              method="post"
+              action="{% url 'commerce:cart_add' product.id %}"
+              hx-post="{% url 'commerce:cart_add' product.id %}"
+              hx-target="#cart-action-{{ product.id }}"
+              hx-swap="outerHTML"
+            >
+              {% csrf_token %}
+              <input type="hidden" name="qty" value="1">
+              <input type="hidden" name="next" value="{{ request.path }}">
+              <input type="hidden" name="wrapper_class" value="product-card__cart-form">
+              <input type="hidden" name="btn_class" value="product-card__btn">
+              <button type="submit" class="btn product-card__btn">{% block_plain 'catalog' 'add_to_cart' %}</button>
+            </form>
+          </div>
+          {% endif %}
+        {% else %}
+        <span class="product-card__oos">{% block_plain 'catalog' 'out_of_stock' %}</span>
+        {% endif %}
+        {% with preview=product.preview_files.0 %}
+          {% if preview %}
+          <a
+            class="btn btn--ghost product-card__btn product-card__btn--preview"
+            href="{{ preview.file.url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >{% block_plain 'catalog' 'preview_short' %}</a>
+          {% endif %}
+        {% endwith %}
+        {% if wishlist_mode %}
+        <form
+          method="post"
+          action="{% url 'cabinet:wishlist_toggle' product.id %}"
+          class="product-card__wishlist-remove"
+        >
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.path }}">
+          <button type="submit" class="btn btn--ghost product-card__btn">{% block_plain 'catalog' 'wishlist_remove' %}</button>
+        </form>
+        {% endif %}
+      </div>
+    </article>
+  </li>
+  {% empty %}
+  <li class="product-grid__empty">{% block_plain 'catalog' 'empty_results' %}</li>
+  {% endfor %}
+</ul>

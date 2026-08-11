@@ -1,0 +1,9 @@
+<div id="toasts" class="toasts" aria-live="polite" aria-atomic="false">
+  {% for message in messages %}
+  <div
+    class="toast toast--{{ message.tags|default:'info' }}"
+    data-toast
+    role="status"
+  >{{ message }}</div>
+  {% endfor %}
+</div>

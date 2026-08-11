@@ -1,0 +1,21 @@
+{% load site_content %}
+<header class="cart__head">
+  <h1 id="cart-title" class="cart__title">{% block_plain 'cart' 'title' %}</h1>
+  {% if items %}
+  <p class="cart__count">{{ items_qty }} {% block_plain 'cart' 'qty_unit' %}</p>
+  {% endif %}
+</header>
+
+{% if items %}
+<div class="cart__layout" data-cart-state="filled">
+  <div class="cart__main">
+    {% include "commerce/partials/cart_items.html" %}
+    {% include "commerce/partials/cart_cross_sell.html" %}
+  </div>
+  <aside class="cart__aside" aria-label="{% block_plain 'cart' 'summary_heading' %}">
+    {% include "commerce/partials/cart_summary.html" %}
+  </aside>
+</div>
+{% else %}
+{% include "commerce/partials/cart_empty.html" %}
+{% endif %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static catalog_tags site_content %}
+
+{% block content %}
+{% section_visible 'home' 'hero_section_visible' as show_hero %}
+{% if show_hero %}
+{% block_image_url 'home' 'hero_bg_image' as hero_bg_url %}
+<section class="hero-banner">
+  <div class="hero-banner__shell{% if hero_slides or hero_bg_url %} hero-banner__shell--has-media{% endif %}">
+    {% if hero_slides %}
+    <div class="hero-banner__slides" aria-hidden="true">
+      {% for slide in hero_slides %}
+      <img class="hero-banner__slide" src="{{ slide.image_url }}" alt="" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+      {% endfor %}
+    </div>
+    {% else %}
+    {% block_image 'home' 'hero_bg_image' css_class='hero-banner__bg' %}
+    {% endif %}
+    {% if not hero_slides and not hero_bg_url %}
+    <div class="hero-banner__accent" aria-hidden="true"></div>
+    {% endif %}
+    <div class="hero-banner__inner container">
+      <p class="hero-banner__brand">{% block_plain 'home' 'hero_brand' %}</p>
+      <h1 class="hero-banner__title">{% block_plain 'home' 'hero_title' %}</h1>
+      <p class="hero-banner__lead">{% block_plain 'home' 'hero_lead' %}</p>
+      <p class="hero-banner__actions">
+        <a class="btn btn--cta" href="{% block_url 'home' 'hero_cta' %}">{% block_url_label 'home' 'hero_cta' %}</a>
+      </p>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% section_visible 'home' 'popular_section_visible' as show_popular %}
+{% if show_popular and popular_products %}
+<section class="product-section" aria-labelledby="popular-heading">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="popular-heading" class="section-head__title">{% block_plain 'home' 'popular_title' %}</h2>
+      <a class="section-head__link" href="{% url 'catalog:katalog' %}?sort=popular">{% block_plain 'home' 'popular_link' %}<span aria-hidden="true"> →</span></a>
+    </div>
+    {% product_grid_cols popular_products as popular_cols %}
+    {% include "catalog/partials/product_grid.html" with products=popular_products grid_cols=popular_cols %}
+  </div>
+</section>
+{% endif %}
+
+{% section_visible 'home' 'new_section_visible' as show_new %}
+{% if show_new and new_products %}
+<section class="product-section product-section--alt" aria-labelledby="new-heading">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__copy">
+        <h2 id="new-heading" class="section-head__title">{% block_plain 'home' 'new_title' %}</h2>
+        <p class="section-head__sub">{% block_plain 'home' 'new_sub' %}</p>
+      </div>
+      <a class="section-head__link" href="{% url 'catalog:katalog' %}?sort=new">{% block_plain 'home' 'new_link' %}<span aria-hidden="true"> →</span></a>
+    </div>
+    {% product_grid_cols new_products as new_cols %}
+    {% include "catalog/partials/product_grid.html" with products=new_products grid_cols=new_cols %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

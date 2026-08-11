@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }} — {{ site_name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/cart.css' %}?v={{ static_version }}">
+<link rel="stylesheet" href="{% static 'css/pages/cart-2.css' %}?v={{ static_version }}">
+{% endblock %}
+
+{% block content %}
+<section class="cart" aria-labelledby="cart-title">
+  <div class="container">
+    {% include "partials/breadcrumbs.html" %}
+    <div id="cart-root">
+      {% include "commerce/partials/cart_content.html" %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/cart.js' %}?v={{ static_version }}" defer></script>
+{% endblock %}

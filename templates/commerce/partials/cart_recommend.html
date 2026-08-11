@@ -1,0 +1,61 @@
+{% load catalog_tags site_content %}
+{% if recommended_products %}
+<section class="cart-rec" aria-labelledby="cart-rec-title">
+  <div class="section-head cart-rec__head">
+    <h2 id="cart-rec-title" class="section-head__title">{% loc cart_settings 'recommended_title' %}</h2>
+  </div>
+  <div class="cart-rec__track" data-cart-rec-track tabindex="0">
+    <ul class="cart-rec__list">
+      {% for product in recommended_products %}
+      {% loc product as product_name %}
+      <li class="cart-rec__card">
+        <article class="cart-rec-card">
+          <a class="cart-rec-card__link" href="{% url 'catalog:nota_detail' product.slug %}">
+            <div class="cart-rec-card__media">
+              {% with img=product.main_images.0 %}
+                {% if img %}
+                {% loc img 'alt' as img_alt %}
+                <img
+                  class="cart-rec-card__img"
+                  src="{{ img.image.url }}"
+                  alt="{{ img_alt|default:product_name }}"
+                  width="180"
+                  height="240"
+                  loading="lazy"
+                  decoding="async"
+                >
+                {% else %}
+                <div class="cart-rec-card__ph" aria-hidden="true"></div>
+                {% endif %}
+              {% endwith %}
+            </div>
+            <h3 class="cart-rec-card__title">{{ product_name }}</h3>
+            {% if product.composer %}
+            <p class="cart-rec-card__meta">{% loc product.composer %}</p>
+            {% endif %}
+            <p class="cart-rec-card__price">{{ product.price_uah }}&nbsp;₴</p>
+          </a>
+          {% if product.is_in_stock %}
+          <form
+            class="cart-rec-card__quick"
+            method="post"
+            action="{% url 'commerce:cart_add' product.id %}"
+            hx-post="{% url 'commerce:cart_add' product.id %}"
+            hx-target="#cart-root"
+            hx-swap="innerHTML"
+          >
+            {% csrf_token %}
+            <input type="hidden" name="qty" value="1">
+            <input type="hidden" name="refresh_cart" value="1">
+            <button type="submit" class="btn cart-rec-card__add" aria-label="{% block_plain 'cart' 'buy' %} {{ product_name }}">
+              {% block_plain 'cart' 'buy' %}
+            </button>
+          </form>
+          {% endif %}
+        </article>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}

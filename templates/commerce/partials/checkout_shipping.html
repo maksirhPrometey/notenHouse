@@ -1,0 +1,94 @@
+{% load site_content %}
+<section
+  class="checkout-card checkout-step"
+  data-checkout-step="shipping"
+  aria-labelledby="checkout-shipping-title"
+>
+  <header class="checkout-step__head">
+    <span class="checkout-step__num" aria-hidden="true">2</span>
+    <h2 id="checkout-shipping-title" class="checkout-step__title">
+      {% block_plain 'checkout' 'shipping_heading' %}
+    </h2>
+    <span class="checkout-step__check" data-step-check hidden aria-hidden="true">✓</span>
+  </header>
+
+  <fieldset class="checkout-methods">
+    <legend class="visually-hidden">{{ form.shipping_method.label }}</legend>
+    <div class="{{ shipping_methods_grid_class }}" role="radiogroup" aria-labelledby="checkout-shipping-title">
+      {% for opt in shipping_options %}
+      <label class="checkout-method{% if opt.selected %} is-selected{% endif %}">
+        <input
+          type="radio"
+          name="{{ form.shipping_method.name }}"
+          value="{{ opt.value }}"
+          class="checkout-method__input"
+          {% if opt.selected %}checked{% endif %}
+          data-shipping-method
+        >
+        <span class="checkout-method__body">
+          <span class="checkout-method__radio" aria-hidden="true"></span>
+          <span class="checkout-method__text">
+            <span class="checkout-method__title">{{ opt.label }}</span>
+            {% if opt.hint %}
+            <span class="checkout-method__hint">{{ opt.hint }}</span>
+            {% endif %}
+          </span>
+        </span>
+      </label>
+      {% endfor %}
+    </div>
+    {% if form.shipping_method.errors %}
+    <div class="invalid-feedback">{{ form.shipping_method.errors.0 }}</div>
+    {% endif %}
+  </fieldset>
+
+  <div class="np-block" id="np-block" data-np-block{% if pickup_selected %} hidden{% endif %}>
+    <div class="checkout-grid">
+      <div class="form-field">
+        <label for="np-city-search">{% block_plain 'checkout' 'np_city_label' %}</label>
+        <input
+          type="search"
+          id="np-city-search"
+          class="form-control checkout-input"
+          autocomplete="off"
+          enterkeyhint="search"
+          value="{{ form.np_city_name.value|default:'' }}"
+          data-np-city-search
+        >
+        <ul id="np-city-results" class="np-results" data-np-city-results hidden></ul>
+        {% if form.np_city_name.errors %}
+        <div class="invalid-feedback">{{ form.np_city_name.errors.0 }}</div>
+        {% endif %}
+      </div>
+      <div class="form-field">
+        <label for="np-warehouse-search">{% block_plain 'checkout' 'np_warehouse_label' %}</label>
+        <input
+          type="search"
+          id="np-warehouse-search"
+          class="form-control checkout-input"
+          autocomplete="off"
+          enterkeyhint="search"
+          value="{{ form.np_warehouse_name.value|default:'' }}"
+          data-np-warehouse-search
+        >
+        <ul id="np-warehouse-results" class="np-results" data-np-warehouse-results hidden></ul>
+        {% if form.np_warehouse_name.errors %}
+        <div class="invalid-feedback">{{ form.np_warehouse_name.errors.0 }}</div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="invalid-feedback" data-np-error hidden></div>
+  </div>
+
+  <div
+    class="checkout-pickup"
+    data-pickup-block
+    {% if not pickup_selected %}hidden{% endif %}
+  >
+    <h3 class="checkout-pickup__title">{% block_plain 'checkout' 'pickup_notice_title' %}</h3>
+    <p class="checkout-pickup__text">{% block_plain 'checkout' 'pickup_notice_text' %}</p>
+    {% if pickup_address %}
+    <p class="checkout-pickup__address">{{ pickup_address }}</p>
+    {% endif %}
+  </div>
+</section>

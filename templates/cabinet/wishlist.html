@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static site_content %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/cabinet.css' %}?v={{ static_version }}">
+<link rel="stylesheet" href="{% static 'css/components/product-grid.css' %}?v={{ static_version }}">
+<link rel="stylesheet" href="{% static 'css/components/product-card.css' %}?v={{ static_version }}">
+<link rel="stylesheet" href="{% static 'css/components/wishlist.css' %}?v={{ static_version }}">
+{% endblock %}
+
+{% block content %}
+<section class="cabinet cabinet--studio container">
+  {% include "partials/breadcrumbs.html" %}
+  {% include "cabinet/partials/nav.html" with active="wishlist" %}
+
+  <div class="cabinet__content studio">
+    <header class="studio-page-head">
+      <h1>{% block_plain 'cabinet' 'nav_wishlist' %}</h1>
+      <p class="studio-page-head__sub">Збережені ноти для швидкого повернення</p>
+    </header>
+
+    {% if products %}
+    {% include "catalog/partials/product_grid.html" with products=products wishlist_mode=True %}
+    {% else %}
+    <div class="studio-empty">
+      <span class="studio-empty__clef" aria-hidden="true">𝄞</span>
+      <p class="studio-empty__text">У вас поки немає обраних нот</p>
+      <a class="btn" href="{% url 'catalog:katalog' %}">Переглянути каталог нот</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

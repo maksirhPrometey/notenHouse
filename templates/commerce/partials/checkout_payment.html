@@ -1,0 +1,69 @@
+{% load site_content %}
+<section
+  class="checkout-card checkout-step"
+  data-checkout-step="payment"
+  aria-labelledby="checkout-payment-title"
+>
+  <header class="checkout-step__head">
+    <span class="checkout-step__num" aria-hidden="true">3</span>
+    <h2 id="checkout-payment-title" class="checkout-step__title">
+      {% block_plain 'checkout' 'payment_heading' %}
+    </h2>
+    <span class="checkout-step__check" data-step-check hidden aria-hidden="true">✓</span>
+  </header>
+
+  <div class="{{ payment_methods_grid_class }}" role="radiogroup" aria-labelledby="checkout-payment-title">
+    {% for opt in payment_options %}
+    <label class="checkout-method{% if opt.selected %} is-selected{% endif %}{% if opt.value == 'liqpay' %} checkout-method--pay{% endif %}">
+      <input
+        type="radio"
+        name="payment_provider"
+        value="{{ opt.value }}"
+        class="checkout-method__input"
+        data-payment-method
+        {% if opt.selected %}checked{% endif %}
+        aria-checked="{% if opt.selected %}true{% else %}false{% endif %}"
+      >
+      <span class="checkout-method__body">
+        <span class="checkout-method__radio" aria-hidden="true"></span>
+        <span class="checkout-method__text">
+          {% if opt.value == 'liqpay' %}
+          <span class="checkout-method__title">{% block_plain 'checkout' 'payment_liqpay' %}</span>
+          <span class="checkout-method__hint">{% block_plain 'checkout' 'payment_liqpay_hint' %}</span>
+          <span class="checkout-pay-logos" aria-hidden="true">
+            <span class="checkout-pay-logos__item">Visa</span>
+            <span class="checkout-pay-logos__item">Mastercard</span>
+            <span class="checkout-pay-logos__item">Apple Pay</span>
+            <span class="checkout-pay-logos__item">Google Pay</span>
+          </span>
+          {% elif opt.value == 'cod' %}
+          <span class="checkout-method__title">{% block_plain 'checkout' 'payment_cod' %}</span>
+          <span class="checkout-method__hint">{% block_plain 'checkout' 'payment_cod_hint' %}</span>
+          {% elif opt.value == 'iban' %}
+          <span class="checkout-method__title">{% block_plain 'checkout' 'payment_iban' %}</span>
+          <span class="checkout-method__hint">{% block_plain 'checkout' 'payment_iban_hint' %}</span>
+          {% endif %}
+        </span>
+      </span>
+    </label>
+    {% endfor %}
+  </div>
+  {% if form.payment_provider.errors %}
+  <div class="invalid-feedback" role="alert">{{ form.payment_provider.errors.0 }}</div>
+  {% endif %}
+
+  <details class="checkout-comment" data-checkout-comment{% if form.customer_comment.value %} open{% endif %}>
+    <summary class="checkout-comment__summary">
+      {% block_plain 'checkout' 'comment_toggle' %}
+    </summary>
+    <div class="form-field checkout-comment__field{% if form.customer_comment.errors %} is-invalid{% endif %}">
+      <label class="visually-hidden" for="{{ form.customer_comment.id_for_label }}">
+        {{ form.customer_comment.label }}
+      </label>
+      {{ form.customer_comment }}
+      {% if form.customer_comment.errors %}
+      <div class="invalid-feedback">{{ form.customer_comment.errors.0 }}</div>
+      {% endif %}
+    </div>
+  </details>
+</section>

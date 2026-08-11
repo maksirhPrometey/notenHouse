@@ -1,0 +1,39 @@
+<fieldset class="site-content-editor__fieldset" id="hero-slides">
+  <legend>Hero-слайди (фото каруселі)</legend>
+  <p class="site-content-editor__desc">
+    Додайте одне або кілька зображень. Без слайдів hero лишається з градієнтом / фоновим фото блоку.
+  </p>
+  {{ hero_formset.management_form }}
+  <div class="hero-slides" data-hero-slides>
+    {% for f in hero_formset %}
+    <div class="hero-slides__row" data-hero-row>
+      {% for hidden in f.hidden_fields %}{{ hidden }}{% endfor %}
+      <div class="hero-slides__preview">
+        {% if f.instance.image %}
+        <img src="{{ f.instance.image.url }}" alt="" height="64">
+        {% endif %}
+      </div>
+      <div class="site-content-editor__field site-content-editor__file">
+        {{ f.image.label_tag }}{{ f.image }}
+      </div>
+      <div class="site-content-editor__field">
+        {{ f.alt_uk.label_tag }}{{ f.alt_uk }}
+      </div>
+      <div class="site-content-editor__field">
+        {{ f.alt_en.label_tag }}{{ f.alt_en }}
+      </div>
+      <div class="site-content-editor__field">
+        {{ f.is_active.label_tag }}{{ f.is_active }}
+      </div>
+      {% if hero_formset.can_delete %}
+      <div class="site-content-editor__field">
+        {{ f.DELETE.label_tag }}{{ f.DELETE }}
+      </div>
+      {% endif %}
+      {% if f.non_field_errors %}
+      <div class="site-content-editor__errors">{{ f.non_field_errors }}</div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</fieldset>

@@ -1,0 +1,214 @@
+/* NotenHaus — Shipping FAQ + musical micro-interactions */
+
+.info-card__notes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.info-card__notes i {
+  position: absolute;
+  left: 50%;
+  top: 35%;
+  margin: 0;
+  font-style: normal;
+  font-size: 0.85rem;
+  line-height: 1;
+  color: var(--jwp-color-maroon);
+  opacity: 0;
+  transform: translate3d(-50%, 0, 0);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.info-card__notes i:nth-child(1) {
+  left: 28%;
+  --note-x: -6px;
+  --note-delay: 0ms;
+}
+
+.info-card__notes i:nth-child(2) {
+  left: 52%;
+  --note-x: 4px;
+  --note-delay: 80ms;
+  color: var(--jwp-color-navy);
+}
+
+.info-card__notes i:nth-child(3) {
+  left: 72%;
+  --note-x: 8px;
+  --note-delay: 140ms;
+  color: var(--jwp-color-maroon-accent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .info-card:hover .info-card__notes i {
+    animation: shippingNoteFloat 0.85s ease var(--note-delay, 0ms) both;
+  }
+}
+
+.info-card:focus-within .info-card__notes i {
+  animation: shippingNoteFloat 0.85s ease var(--note-delay, 0ms) both;
+}
+
+@keyframes shippingNoteFloat {
+  0% {
+    opacity: 0;
+    transform: translate3d(-50%, 0, 0) scale(0.7);
+  }
+  25% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(-50% + var(--note-x, 0px)), -18px, 0) scale(1.05);
+  }
+}
+
+.shipping-faq {
+  display: grid;
+  gap: 0.65rem;
+  max-width: 46rem;
+}
+
+.faq-item {
+  background: var(--jwp-color-neutral-1);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.faq-item.is-open {
+  border-color: color-mix(in srgb, var(--jwp-color-maroon) 35%, var(--color-border));
+}
+
+.faq-item__heading {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.faq-item__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  width: 100%;
+  margin: 0;
+  padding: 1rem 1.1rem;
+  border: 0;
+  background: transparent;
+  color: var(--jwp-color-text-body);
+  font: inherit;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.02rem;
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.faq-item__trigger:hover,
+.faq-item__trigger:focus-visible {
+  color: var(--jwp-color-maroon);
+}
+
+.faq-item__trigger:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+
+.faq-item__chevron {
+  position: relative;
+  flex-shrink: 0;
+  width: 0.85rem;
+  height: 0.85rem;
+  transition: transform 0.28s ease;
+}
+
+.faq-item__chevron::before {
+  content: "";
+  position: absolute;
+  inset: 18% 18%;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transform-origin: center;
+}
+
+.faq-item.is-open .faq-item__chevron {
+  transform: rotate(180deg);
+}
+
+.faq-item__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.32s ease;
+}
+
+.faq-item.is-open .faq-item__panel {
+  grid-template-rows: 1fr;
+}
+
+.faq-item__panel[hidden] {
+  display: grid;
+}
+
+.faq-item__content {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.faq-item__content p {
+  margin: 0;
+  padding: 0 1.1rem 1.05rem;
+  color: var(--color-text-muted);
+  font-size: 0.96rem;
+  line-height: 1.6;
+}
+
+@supports not (background: color-mix(in srgb, #000 50%, #fff)) {
+  .faq-item.is-open {
+    border-color: var(--jwp-color-maroon-faded);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .info-card,
+  .faq-item__chevron,
+  .faq-item__panel {
+    transition: none;
+  }
+
+  .info-card:hover {
+    transform: none;
+  }
+
+  .info-card__notes i,
+  .info-card:hover .info-card__notes i,
+  .info-card:focus-within .info-card__notes i {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* iOS Safari: safer tap targets + avoid 100vh quirks on long pages */
+@supports (-webkit-touch-callout: none) {
+  .faq-item__trigger {
+    min-height: 2.75rem;
+    padding-top: 1.05rem;
+    padding-bottom: 1.05rem;
+  }
+
+  .info-card,
+  .pack-card,
+  .shipping-trust {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}

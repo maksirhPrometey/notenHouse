@@ -1,0 +1,6 @@
+{% load site_content %}
+<ul class="cart-items" aria-label="{% block_plain 'cart' 'items_aria' %}">
+  {% for item in items %}
+  {% include "commerce/partials/cart_item.html" with item=item %}
+  {% endfor %}
+</ul>

@@ -1,0 +1,22 @@
+/* ActiveTheme admin — usage hint under color field label */
+
+.theme-color-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  white-space: normal;
+  line-height: 1.25;
+  max-width: 16rem;
+}
+
+.theme-color-label__title {
+  font-weight: 600;
+}
+
+.theme-color-label__desc {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #94a3b8;
+  white-space: normal;
+  line-height: 1.35;
+}

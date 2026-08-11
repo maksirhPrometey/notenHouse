@@ -1,0 +1,65 @@
+{% load site_content %}
+{% if breadcrumbs %}
+<nav
+  class="breadcrumbs{% if breadcrumbs|length > 3 %} breadcrumbs--collapsible{% endif %}"
+  aria-label="Breadcrumb"
+  data-breadcrumbs
+>
+  <ol
+    class="breadcrumbs__list"
+    itemscope
+    itemtype="https://schema.org/BreadcrumbList"
+  >
+    {% for label, url in breadcrumbs %}
+    <li
+      class="breadcrumbs__item{% if forloop.last %} breadcrumbs__item--current{% endif %}{% if breadcrumbs|length > 3 and not forloop.first and forloop.revcounter > 2 %} breadcrumbs__item--collapsed{% endif %}"
+      itemprop="itemListElement"
+      itemscope
+      itemtype="https://schema.org/ListItem"
+    >
+      {% if url and not forloop.last %}
+      <a
+        class="breadcrumbs__link"
+        href="{{ url }}"
+        itemprop="item"
+      >
+        <span itemprop="name">{{ label }}</span>
+      </a>
+      {% else %}
+      <span class="breadcrumbs__current" aria-current="page" itemprop="name">{{ label }}</span>
+      <link itemprop="item" href="{{ request.build_absolute_uri }}">
+      {% endif %}
+      <meta itemprop="position" content="{{ forloop.counter }}">
+      {% if not forloop.last %}
+      <span class="breadcrumbs__sep" aria-hidden="true">
+        <svg class="breadcrumbs__note" width="10" height="14" viewBox="0 0 10 14" focusable="false">
+          <path
+            fill="currentColor"
+            d="M7.2.2v8.05a2.35 2.35 0 1 0 1.35 2.12V3.55L2.55 5.2v5.35A2.35 2.35 0 1 0 3.9 12.7V3.95L7.2.2z"
+          />
+        </svg>
+      </span>
+      {% endif %}
+    </li>
+    {% if forloop.first and breadcrumbs|length > 3 %}
+    <li class="breadcrumbs__item breadcrumbs__item--ellipsis">
+      <button
+        type="button"
+        class="breadcrumbs__expand"
+        aria-expanded="false"
+        aria-label="{% block_plain 'site' 'breadcrumb_expand' %}"
+      >…</button>
+      <span class="breadcrumbs__sep" aria-hidden="true">
+        <svg class="breadcrumbs__note" width="10" height="14" viewBox="0 0 10 14" focusable="false">
+          <path
+            fill="currentColor"
+            d="M7.2.2v8.05a2.35 2.35 0 1 0 1.35 2.12V3.55L2.55 5.2v5.35A2.35 2.35 0 1 0 3.9 12.7V3.95L7.2.2z"
+          />
+        </svg>
+      </span>
+    </li>
+    {% endif %}
+    {% endfor %}
+  </ol>
+</nav>
+{% endif %}

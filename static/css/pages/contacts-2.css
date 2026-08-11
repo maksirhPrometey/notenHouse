@@ -1,0 +1,194 @@
+/* NotenHaus — Contacts musical micro-interactions */
+
+.contact-card__notes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.contact-card__notes i {
+  position: absolute;
+  left: 50%;
+  top: 35%;
+  margin: 0;
+  font-style: normal;
+  font-size: 0.85rem;
+  line-height: 1;
+  color: var(--jwp-color-maroon);
+  opacity: 0;
+  transform: translate3d(-50%, 0, 0);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.contact-card__notes i:nth-child(1) {
+  left: 28%;
+  --note-x: -6px;
+  --note-delay: 0ms;
+}
+
+.contact-card__notes i:nth-child(2) {
+  left: 52%;
+  --note-x: 4px;
+  --note-delay: 80ms;
+  color: var(--jwp-color-navy);
+}
+
+.contact-card__notes i:nth-child(3) {
+  left: 72%;
+  --note-x: 8px;
+  --note-delay: 140ms;
+  color: var(--jwp-color-maroon-accent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .contact-card:hover .contact-card__notes i {
+    animation: contactNoteFloat 0.85s ease var(--note-delay, 0ms) both;
+  }
+
+  .contact-card:hover .contact-card__wave {
+    animation: contactWavePulse 0.9s ease infinite;
+  }
+
+  .contact-card:hover .contact-card__wave--2 {
+    animation-delay: 0.15s;
+  }
+}
+
+.contact-card:focus-within .contact-card__notes i {
+  animation: contactNoteFloat 0.85s ease var(--note-delay, 0ms) both;
+}
+
+@keyframes contactNoteFloat {
+  0% {
+    opacity: 0;
+    transform: translate3d(-50%, 0, 0) scale(0.7);
+  }
+  25% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(-50% + var(--note-x, 0px)), -8px, 0) scale(1.05);
+  }
+}
+
+@keyframes contactWavePulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.contacts-submit__notes {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.contacts-submit__particle {
+  position: absolute;
+  left: var(--nx, 50%);
+  top: var(--ny, 45%);
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: calc(0.85rem * var(--scale, 1));
+  line-height: 1;
+  color: var(--jwp-color-gold);
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  will-change: transform, opacity;
+  transform: translate3d(-50%, 0, 0) scale(0.6);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.contacts-submit__particle--burst {
+  color: var(--jwp-color-gold);
+  z-index: 2;
+  animation: contactsNoteBurst 320ms cubic-bezier(0.15, 0.75, 0.35, 1) forwards;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .contacts-submit:hover:not(.is-success):not(:disabled)
+    .contacts-submit__particle--hover {
+    animation-name: contactsNoteStream;
+    animation-duration: var(--dur, 1.05s);
+    animation-delay: var(--delay, 0ms);
+    animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+}
+
+.contacts-submit:focus-visible:not(.is-success):not(:disabled)
+  .contacts-submit__particle--hover {
+  animation-name: contactsNoteStream;
+  animation-duration: var(--dur, 1.05s);
+  animation-delay: var(--delay, 0ms);
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+}
+
+@keyframes contactsNoteStream {
+  0% {
+    opacity: 0;
+    transform: translate3d(-50%, 0, 0) scale(0.55) rotate(0deg);
+  }
+  18% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform:
+      translate3d(calc(-50% + var(--drift-x, 0px)), -46px, 0)
+      scale(calc(var(--scale, 1) * 1.12))
+      rotate(var(--rot, 10deg));
+  }
+}
+
+@keyframes contactsNoteBurst {
+  0% {
+    opacity: 0.95;
+    transform: translate3d(-50%, -50%, 0) scale(0.55) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform:
+      translate3d(
+        calc(-50% + var(--burst-x, 0px)),
+        calc(-50% + var(--burst-y, 0px)),
+        0
+      )
+      scale(var(--scale, 1))
+      rotate(var(--rot, 20deg));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-card,
+  .contact-card__notes i,
+  .contact-card__wave,
+  .contacts-submit,
+  .contacts-submit__particle,
+  .contacts-float label {
+    animation: none;
+    transition: none;
+  }
+
+  .contact-card:hover {
+    transform: none;
+  }
+}

@@ -1,0 +1,56 @@
+/* NotenHaus — product grid (pick_grid_columns + flex center last row) */
+
+.product-grid {
+  --grid-cols: 2;
+  --grid-gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--grid-gap);
+  width: 100%;
+}
+
+.product-grid__item {
+  width: calc((100% - (var(--grid-cols) - 1) * var(--grid-gap)) / var(--grid-cols));
+  min-width: 0;
+}
+
+.product-grid__item > .product-card {
+  height: 100%;
+}
+
+.product-grid__empty {
+  width: 100%;
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: 1.5rem 0;
+}
+
+@media (min-width: 768px) {
+  .product-grid {
+    --grid-cols: 3;
+    --grid-gap: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .product-grid {
+    --grid-cols: 4;
+    --grid-gap: 1.5rem;
+  }
+
+  .product-grid--cols-3 {
+    --grid-cols: 3;
+  }
+
+  .product-grid--cols-4 {
+    --grid-cols: 4;
+  }
+
+  .product-grid--cols-5 {
+    --grid-cols: 5;
+  }
+}

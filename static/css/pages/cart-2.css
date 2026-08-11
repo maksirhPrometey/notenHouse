@@ -1,0 +1,348 @@
+/* NotenHaus — cart summary, trust, cross-sell, recommendations */
+
+/* Summary */
+.cart-summary {
+  padding: 1.15rem 1.2rem 1.35rem;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  box-shadow: 0 10px 28px rgba(28, 28, 28, 0.06);
+}
+
+.cart-summary__title {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  color: var(--jwp-color-navy);
+}
+
+.cart-summary__rows {
+  margin: 0 0 1.15rem;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.cart-summary__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0;
+}
+
+.cart-summary__row dt,
+.cart-summary__row dd {
+  margin: 0;
+}
+
+.cart-summary__row dt {
+  color: var(--color-text-muted);
+}
+
+.cart-summary__row--total {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 1.15rem;
+}
+
+.cart-summary__checkout {
+  width: 100%;
+  margin-bottom: 0.65rem;
+}
+
+.cart-summary__continue {
+  width: 100%;
+}
+
+/* Trust */
+.cart-trust {
+  list-style: none;
+  margin: 1.15rem 0 0;
+  padding: 1rem 0 0;
+  border-top: 1px solid var(--color-border);
+  display: grid;
+  gap: 0.55rem;
+}
+
+.cart-trust__item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 1.75rem;
+}
+
+.cart-trust__img {
+  width: 2.75rem;
+  height: 1.5rem;
+  object-fit: contain;
+}
+
+.cart-trust__mark {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 2px;
+  flex: 0 0 auto;
+  background: var(--jwp-color-neutral-2);
+  position: relative;
+}
+
+.cart-trust__mark--ssl {
+  background: var(--jwp-color-green);
+}
+
+.cart-trust__mark--ssl::after {
+  content: "";
+  position: absolute;
+  inset: 0.35rem;
+  border: 2px solid var(--jwp-color-neutral-0);
+  border-radius: 1px;
+}
+
+.cart-trust__mark--payment {
+  background: var(--jwp-color-navy);
+}
+
+.cart-trust__mark--payment::after {
+  content: "";
+  position: absolute;
+  left: 0.3rem;
+  right: 0.3rem;
+  top: 50%;
+  height: 2px;
+  background: var(--jwp-color-gold);
+  transform: translateY(-50%);
+}
+
+.cart-trust__mark--rating {
+  background: var(--jwp-color-yellow);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.cart-trust__label {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+/* Cross-sell */
+.cart-cross {
+  margin-top: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--jwp-color-neutral-1);
+}
+
+.cart-cross__summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 0.95rem 1.1rem;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--jwp-color-navy);
+}
+
+.cart-cross__summary::-webkit-details-marker {
+  display: none;
+}
+
+.cart-cross__list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.85rem 0.95rem;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.cart-cross__item {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.55rem;
+  background: var(--jwp-color-neutral-0);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+}
+
+.cart-cross__cover {
+  display: block;
+  aspect-ratio: 3 / 4;
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--jwp-color-neutral-1);
+}
+
+.cart-cross__cover img,
+.cart-cross__cover-ph {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cart-cross__title {
+  display: block;
+  color: var(--jwp-color-text-body);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.cart-cross__composer,
+.cart-cross__price {
+  margin: 0.1rem 0 0;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.cart-cross__price {
+  color: var(--jwp-color-text-body);
+  font-weight: 600;
+}
+
+.cart-cross__add {
+  min-height: 2.5rem;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.cart-cross__oos {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* Recommendations carousel */
+.cart-rec {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.cart-rec__track {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  padding-bottom: 0.35rem;
+}
+
+.cart-rec__list {
+  list-style: none;
+  margin: 0;
+  padding: 0.15rem;
+  display: flex;
+  gap: 0.85rem;
+  width: max-content;
+}
+
+.cart-rec__card {
+  width: min(42vw, 11.5rem);
+  scroll-snap-align: start;
+}
+
+@media (min-width: 768px) {
+  .cart-rec__card {
+    width: 12.5rem;
+  }
+}
+
+.cart-rec-card {
+  position: relative;
+  height: 100%;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.cart-rec-card:hover,
+.cart-rec-card:focus-within {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(28, 28, 28, 0.1);
+}
+
+.cart-rec-card__link {
+  display: block;
+  padding: 0.65rem 0.65rem 0.4rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cart-rec-card__media {
+  aspect-ratio: 3 / 4;
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--jwp-color-neutral-1);
+  margin-bottom: 0.55rem;
+}
+
+.cart-rec-card__img,
+.cart-rec-card__ph {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cart-rec-card__title {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--jwp-color-text-body);
+}
+
+.cart-rec-card__meta,
+.cart-rec-card__price {
+  margin: 0.25rem 0 0;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.cart-rec-card__price {
+  color: var(--jwp-color-text-body);
+  font-weight: 700;
+}
+
+.cart-rec-card__quick {
+  display: block;
+  padding: 0 0.65rem 0.7rem;
+}
+
+.cart-rec-card .btn.cart-rec-card__add {
+  display: inline-flex;
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+}
+
+.cart-rec-card:hover .btn.cart-rec-card__add,
+.cart-rec-card:focus-within .btn.cart-rec-card__add {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+@media (max-width: 639px) {
+  .cart-cross__item {
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+  }
+
+  .cart-cross__item form,
+  .cart-cross__oos {
+    grid-column: 1 / -1;
+  }
+
+  .cart-cross__add {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cart-rec-card,
+  .cart-rec-card__add {
+    transition: none;
+  }
+}

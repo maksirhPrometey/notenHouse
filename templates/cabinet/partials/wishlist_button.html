@@ -1,0 +1,30 @@
+{% load site_content %}
+<div id="wishlist-action-{{ product.id }}" class="wishlist-action">
+  {% if request.user.is_authenticated %}
+  <form
+    method="post"
+    action="{% url 'cabinet:wishlist_toggle' product.id %}"
+    hx-post="{% url 'cabinet:wishlist_toggle' product.id %}"
+    hx-target="#wishlist-action-{{ product.id }}"
+    hx-swap="outerHTML"
+  >
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.path }}">
+    <button
+      type="submit"
+      class="btn btn--ghost wishlist-btn{% if is_wishlisted %} wishlist-btn--active{% endif %}"
+      aria-pressed="{% if is_wishlisted %}true{% else %}false{% endif %}"
+    >
+      <span class="wishlist-btn__icon" aria-hidden="true">{% if is_wishlisted %}♥{% else %}♡{% endif %}</span>
+      {% if is_wishlisted %}{% block_plain 'cabinet' 'wishlist_added' %}{% else %}{% block_plain 'cabinet' 'wishlist_add' %}{% endif %}
+    </button>
+  </form>
+  {% if oob_wishlist_header %}
+  {% include "cabinet/partials/wishlist_header_icon.html" %}
+  {% endif %}
+  {% else %}
+  <a class="btn btn--ghost wishlist-btn" href="{% url 'cabinet:login' %}?next={{ request.path|urlencode }}">
+    <span class="wishlist-btn__icon" aria-hidden="true">♡</span> {% block_plain 'cabinet' 'wishlist_add' %}
+  </a>
+  {% endif %}
+</div>

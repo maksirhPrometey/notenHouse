@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+{% load static site_content %}
+
+{% block title %}{{ page_title }} — {{ site_name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/shipping.css' %}?v={{ static_version }}">
+<link rel="stylesheet" href="{% static 'css/pages/shipping-2.css' %}?v={{ static_version }}">
+{% endblock %}
+
+{% block content %}
+<section class="shipping" aria-labelledby="shipping-title">
+  <div class="container">
+    {% include "partials/breadcrumbs.html" %}
+
+    <header class="shipping__intro">
+      <h1 id="shipping-title" class="shipping__title">{% block_plain 'shipping' 'title' %}</h1>
+      <p class="shipping__subtitle">
+        {% if show_pickup %}
+        {% block_plain 'shipping' 'subtitle_with_pickup' %}
+        {% else %}
+        {% block_plain 'shipping' 'subtitle' %}
+        {% endif %}
+      </p>
+    </header>
+
+    <aside class="shipping-trust" aria-label="{% block_plain 'shipping' 'trust_aria' %}">
+      <span class="shipping-trust__ribbon" aria-hidden="true">{% block_plain 'shipping' 'trust_badge' %}</span>
+      <div class="shipping-trust__body">
+        <p class="shipping-trust__title">{% block_plain 'shipping' 'trust_title' %}</p>
+        <p class="shipping-trust__text">{% block_plain 'shipping' 'trust_text' %}</p>
+      </div>
+    </aside>
+
+    <section class="shipping-section" aria-labelledby="delivery-methods-title">
+      <h2 id="delivery-methods-title" class="shipping-section__title">{% block_plain 'shipping' 'delivery_title' %}</h2>
+      <p class="shipping-section__lead">{% block_plain 'shipping' 'delivery_lead' %}</p>
+
+      <div class="shipping-grid shipping-grid--cols-{{ delivery_cols }}">
+        <article class="info-card" data-info-card>
+          <div class="info-card__icon" aria-hidden="true">
+            <svg class="info-card__svg" viewBox="0 0 40 40" width="40" height="40" focusable="false">
+              <rect x="6" y="12" width="28" height="18" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M6 18h28M14 12v-2.5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2V12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="14" cy="25" r="1.6" fill="currentColor"/>
+              <circle cx="26" cy="25" r="1.6" fill="currentColor"/>
+            </svg>
+            <span class="info-card__notes">
+              <i>♪</i><i>♫</i><i>♩</i>
+            </span>
+          </div>
+          <div class="info-card__body">
+            <span class="info-card__badge">{% block_plain 'shipping' 'card_np_branch_badge' %}</span>
+            <h3 class="info-card__title">{% block_plain 'shipping' 'card_np_branch_title' %}</h3>
+            <p class="info-card__text">{% block_plain 'shipping' 'card_np_branch_text' %}</p>
+          </div>
+        </article>
+
+        <article class="info-card" data-info-card>
+          <div class="info-card__icon" aria-hidden="true">
+            <svg class="info-card__svg" viewBox="0 0 40 40" width="40" height="40" focusable="false">
+              <rect x="8" y="8" width="24" height="24" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M8 16h24M16 8v24" fill="none" stroke="currentColor" stroke-width="2"/>
+              <rect x="18" y="20" width="10" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.75"/>
+            </svg>
+            <span class="info-card__notes">
+              <i>♪</i><i>♫</i><i>♩</i>
+            </span>
+          </div>
+          <div class="info-card__body">
+            <h3 class="info-card__title">{% block_plain 'shipping' 'card_np_parcel_title' %}</h3>
+            <p class="info-card__text">{% block_plain 'shipping' 'card_np_parcel_text' %}</p>
+          </div>
+        </article>
+
+        {% if show_pickup %}
+        <article class="info-card" data-info-card>
+          <div class="info-card__icon" aria-hidden="true">
+            <svg class="info-card__svg" viewBox="0 0 40 40" width="40" height="40" focusable="false">
+              <path d="M20 6.5 8 14v12l12 7.5 12-7.5V14L20 6.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M20 21.5V34M8 14l12 7.5L32 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            <span class="info-card__notes">
+              <i>♪</i><i>♫</i><i>♩</i>
+            </span>
+          </div>
+          <div class="info-card__body">
+            <span class="info-card__badge info-card__badge--green">{% block_plain 'shipping' 'card_pickup_badge' %}</span>
+            <h3 class="info-card__title">{% block_plain 'shipping' 'card_pickup_title' %}</h3>
+            {% if contacts.address %}
+            <p class="info-card__address">{{ contacts.address }}</p>
+            {% endif %}
+            <p class="info-card__text">{% block_plain 'shipping' 'card_pickup_text' %}</p>
+            {% if contacts.maps_url %}
+            <a
+              class="info-card__link"
+              href="{{ contacts.maps_url }}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >{% block_plain 'contacts' 'maps_label' %}</a>
+            {% endif %}
+          </div>
+        </article>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="shipping-section" aria-labelledby="payment-methods-title">
+      <h2 id="payment-methods-title" class="shipping-section__title">{% block_plain 'shipping' 'payment_title' %}</h2>
+      <p class="shipping-section__lead">
+        {% if payment_cols > 1 %}
+        {% block_plain 'shipping' 'payment_lead' %}
+        {% else %}
+        {% block_plain 'shipping' 'payment_lead_single' %}
+        {% endif %}
+      </p>
+
+      <div class="shipping-grid shipping-grid--payment shipping-grid--cols-{{ payment_cols }}">
+        <article class="info-card" data-info-card>
+          <div class="info-card__icon" aria-hidden="true">
+            <svg class="info-card__svg" viewBox="0 0 40 40" width="40" height="40" focusable="false">
+              <rect x="5" y="11" width="30" height="18" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M5 17h30" stroke="currentColor" stroke-width="2"/>
+              <rect x="9" y="22" width="8" height="3" rx="1" fill="currentColor"/>
+            </svg>
+            <span class="info-card__notes">
+              <i>♪</i><i>♫</i><i>♩</i>
+            </span>
+          </div>
+          <div class="info-card__body">
+            <span class="info-card__badge">{% block_plain 'shipping' 'card_liqpay_badge' %}</span>
+            <h3 class="info-card__title">{% block_plain 'shipping' 'card_liqpay_title' %}</h3>
+            <p class="info-card__text">
+              {% block_plain 'shipping' 'card_liqpay_text' %}
+            </p>
+            <ul class="pay-badges" aria-label="{% block_plain 'shipping' 'pay_badges_aria' %}">
+              <li class="pay-badges__item">LiqPay</li>
+              <li class="pay-badges__item">Visa</li>
+              <li class="pay-badges__item">Mastercard</li>
+              <li class="pay-badges__item">Apple Pay</li>
+              <li class="pay-badges__item">Google Pay</li>
+            </ul>
+          </div>
+        </article>
+
+        {% if show_payment_cod %}
+        <article class="info-card" data-info-card>
+          <div class="info-card__icon" aria-hidden="true">
+            <svg class="info-card__svg" viewBox="0 0 40 40" width="40" height="40" focusable="false">
+              <rect x="10" y="7" width="20" height="26" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M15 13h10M15 18h10M15 23h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span class="info-card__notes">
+              <i>♪</i><i>♫</i><i>♩</i>
+            </span>
+          </div>
+          <div class="info-card__body">
+            <span class="info-card__badge info-card__badge--navy">{% block_plain 'shipping' 'card_cod_badge' %}</span>
+            <h3 class="info-card__title">{% block_plain 'shipping' 'card_cod_title' %}</h3>
+            <p class="info-card__text">
+              {% block_plain 'shipping' 'card_cod_text' %}
+            </p>
+          </div>
+        </article>
+        {% endif %}
+
+        {% if show_payment_iban %}
+        <article class="info-card" data-info-card>
+          <div class="info-card__icon" aria-hidden="true">
+            <svg class="info-card__svg" viewBox="0 0 40 40" width="40" height="40" focusable="false">
+              <path d="M8 12h24v16H8z" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 18h16M12 23h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="28" cy="23" r="1.5" fill="currentColor"/>
+            </svg>
+            <span class="info-card__notes">
+              <i>♪</i><i>♫</i><i>♩</i>
+            </span>
+          </div>
+          <div class="info-card__body">
+            <span class="info-card__badge info-card__badge--gold">{% block_plain 'shipping' 'card_iban_badge' %}</span>
+            <h3 class="info-card__title">{% block_plain 'shipping' 'card_iban_title' %}</h3>
+            <p class="info-card__text">
+              {% block_plain 'shipping' 'card_iban_text' %}
+            </p>
+          </div>
+        </article>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="shipping-section" aria-labelledby="packaging-title">
+      <h2 id="packaging-title" class="shipping-section__title">{% block_plain 'shipping' 'packaging_title' %}</h2>
+      <article class="pack-card">
+        <div class="pack-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="48" height="48" focusable="false">
+            <path d="M8 16 24 8l16 8v16L24 40 8 32V16Z" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linejoin="round"/>
+            <path d="M8 16l16 8 16-8M24 24v16" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linejoin="round"/>
+            <path d="M16 20.5 32 12.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" opacity="0.55"/>
+          </svg>
+        </div>
+        <div class="pack-card__body">
+          <h3 class="pack-card__title">{% block_plain 'shipping' 'packaging_card_title' %}</h3>
+          <p class="pack-card__text">
+            {% block_plain 'shipping' 'packaging_text' %}
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <section class="shipping-section" aria-labelledby="faq-title">
+      <h2 id="faq-title" class="shipping-section__title">{% block_plain 'shipping' 'faq_title' %}</h2>
+      <div class="shipping-faq" data-shipping-faq>
+        <div class="faq-item">
+          <h3 class="faq-item__heading">
+            <button
+              type="button"
+              class="faq-item__trigger"
+              id="faq-trigger-1"
+              aria-expanded="false"
+              aria-controls="faq-panel-1"
+              data-faq-trigger
+            >
+              <span>{% block_plain 'shipping' 'faq_1_q' %}</span>
+              <span class="faq-item__chevron" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div
+            class="faq-item__panel"
+            id="faq-panel-1"
+            role="region"
+            aria-labelledby="faq-trigger-1"
+            data-faq-panel
+            hidden
+          >
+            <div class="faq-item__content">
+              <p>
+                {% block_plain 'shipping' 'faq_1_a' %}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="faq-item__heading">
+            <button
+              type="button"
+              class="faq-item__trigger"
+              id="faq-trigger-2"
+              aria-expanded="false"
+              aria-controls="faq-panel-2"
+              data-faq-trigger
+            >
+              <span>{% block_plain 'shipping' 'faq_2_q' %}</span>
+              <span class="faq-item__chevron" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div
+            class="faq-item__panel"
+            id="faq-panel-2"
+            role="region"
+            aria-labelledby="faq-trigger-2"
+            data-faq-panel
+            hidden
+          >
+            <div class="faq-item__content">
+              <p>
+                {% block_plain 'shipping' 'faq_2_a' %}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="faq-item__heading">
+            <button
+              type="button"
+              class="faq-item__trigger"
+              id="faq-trigger-3"
+              aria-expanded="false"
+              aria-controls="faq-panel-3"
+              data-faq-trigger
+            >
+              <span>{% block_plain 'shipping' 'faq_3_q' %}</span>
+              <span class="faq-item__chevron" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div
+            class="faq-item__panel"
+            id="faq-panel-3"
+            role="region"
+            aria-labelledby="faq-trigger-3"
+            data-faq-panel
+            hidden
+          >
+            <div class="faq-item__content">
+              <p>
+                {% block_plain 'shipping' 'faq_3_a' %}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/shipping.js' %}?v={{ static_version }}" defer></script>
+{% endblock %}

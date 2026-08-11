@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/cabinet.css' %}?v={{ static_version }}">
+{% endblock %}
+
+{% block content %}
+<section class="cabinet cabinet--studio container">
+  {% include "partials/breadcrumbs.html" %}
+  {% include "cabinet/partials/nav.html" with active="orders" %}
+
+  <div class="cabinet__content studio">
+    <header class="studio-page-head">
+      <h1>Мої замовлення</h1>
+      <p class="studio-page-head__sub">Історія покупок і статуси доставки</p>
+    </header>
+
+    {% if orders %}
+    <div class="cabinet-table-wrap">
+      <table class="cabinet-orders-table">
+        <thead>
+          <tr>
+            <th>Номер</th>
+            <th>Дата</th>
+            <th>Статус</th>
+            <th>Оплата</th>
+            <th>Сума</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td>
+              <a class="cabinet-orders-table__link" href="{% url 'cabinet:order_detail' order.number %}">
+                {{ order.number }}
+              </a>
+            </td>
+            <td>{{ order.created_at|date:"d.m.Y" }}</td>
+            <td>
+              <span class="status-pill status-pill--{{ order.pill_tone }}">
+                {{ order.pill_label }}
+              </span>
+            </td>
+            <td>{{ order.get_payment_status_display }}</td>
+            <td>{{ order.total_uah }}&nbsp;₴</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if is_paginated %}
+    <nav class="cabinet-pagination" aria-label="Сторінки">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">← Попередні</a>
+      {% endif %}
+      <span>{{ page_obj.number }} з {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">Наступні →</a>
+      {% endif %}
+    </nav>
+    {% endif %}
+    {% else %}
+    <div class="studio-empty">
+      <span class="studio-empty__clef" aria-hidden="true">𝄞</span>
+      <p class="studio-empty__text">Замовлень поки немає</p>
+      <a class="btn" href="{% url 'catalog:katalog' %}">Переглянути каталог нот</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

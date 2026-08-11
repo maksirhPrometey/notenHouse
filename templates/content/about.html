@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static catalog_tags %}
+
+{% block title %}{{ page_title }} — {{ site_name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/about.css' %}?v={{ static_version }}">
+<link rel="stylesheet" href="{% static 'css/pages/about-2.css' %}?v={{ static_version }}">
+{% endblock %}
+
+{% block content %}
+<article class="about" aria-labelledby="about-hero-title">
+  <header class="about-hero">
+    <div class="about-hero__staff" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="container about-hero__inner">
+      {% include "partials/breadcrumbs.html" %}
+      <h1 id="about-hero-title" class="about-hero__title">{% loc about 'hero_title' %}</h1>
+      <p class="about-hero__subtitle">{% loc about 'hero_subtitle' %}</p>
+    </div>
+  </header>
+
+  {% if milestones %}
+  <section class="about-milestones" aria-label="{% if current_locale == 'en' %}NotenHaus figures{% else %}Цифри NotenHaus{% endif %}" data-about-milestones>
+    <div class="container">
+      <div class="about-milestones__grid about-milestones__grid--cols-{{ milestones_cols }}">
+        {% for item in milestones %}
+        <div class="milestone" data-milestone{% if item.count_target is not None %} data-count-target="{{ item.count_target }}" data-count-suffix="{{ item.count_suffix }}"{% endif %}>
+          <p class="milestone__value" data-milestone-value>{% loc item 'value' %}</p>
+          <p class="milestone__label">{% loc item 'label' %}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if timeline %}
+  <section class="about-timeline" aria-labelledby="about-timeline-title">
+    <div class="container">
+      <header class="about-section-head">
+        <h2 id="about-timeline-title" class="about-section-head__title">{% loc about 'timeline_title' %}</h2>
+        {% loc about 'timeline_lead' as about_timeline_lead %}
+        {% if about_timeline_lead %}
+        <p class="about-section-head__lead">{{ about_timeline_lead }}</p>
+        {% endif %}
+      </header>
+
+      <ol class="timeline" data-about-timeline>
+        {% for item in timeline %}
+        <li class="timeline__item" data-timeline-node>
+          <div class="timeline__marker" aria-hidden="true">
+            <span class="timeline__note">♪</span>
+            <span class="timeline__notes">
+              <i>♪</i><i>♫</i><i>♩</i>
+            </span>
+          </div>
+          <div class="timeline__body">
+            <p class="timeline__year">{% loc item 'year' %}</p>
+            <h3 class="timeline__title">{% loc item 'title' %}</h3>
+            <p class="timeline__text">{% loc item 'text' %}</p>
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if values %}
+  <section class="about-values" aria-labelledby="about-values-title">
+    <div class="container">
+      <header class="about-section-head">
+        <h2 id="about-values-title" class="about-section-head__title">{% loc about 'values_title' %}</h2>
+      </header>
+
+      <div class="about-values__grid about-values__grid--cols-{{ values_cols }}">
+        {% for card in values %}
+        <article class="value-card" data-value-card tabindex="0">
+          <div class="value-card__icon" aria-hidden="true">
+            {% if card.icon_key == 'package' %}
+            <svg class="value-card__svg" viewBox="0 0 40 40" width="40" height="40" focusable="false">
+              <path d="M8 14 20 8l12 6v14l-12 6-12-6V14Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M8 14 20 20l12-6M20 20v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            {% elif card.icon_key == 'experts' %}
+            <svg class="value-card__svg" viewBox="0 0 40 40" width="40" height="40" focusable="false">
+              <circle cx="20" cy="13" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M10 30c1.8-5 5.2-7.5 10-7.5S28.2 25 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M27 11c2.2.4 3.8 2.2 3.8 4.5S29.2 19.6 27 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+            </svg>
+            {% else %}
+            <svg class="value-card__svg" viewBox="0 0 40 40" width="40" height="40" focusable="false">
+              <path d="M10 8.5h14a4 4 0 0 1 4 4V31a2.5 2.5 0 0 0-2.5-2.5H10V8.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M10 28.5h15.5A2.5 2.5 0 0 1 28 31v0a2.5 2.5 0 0 1-2.5 2.5H10V28.5Z" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M15 14h8M15 18.5h8M15 23h5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+            </svg>
+            {% endif %}
+            <span class="value-card__notes">
+              <i>♪</i><i>♫</i><i>♩</i><i>♪</i>
+            </span>
+          </div>
+          <h3 class="value-card__title">{% loc card 'title' %}</h3>
+          <p class="value-card__text">{% loc card 'text' %}</p>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <section class="about-cta" aria-labelledby="about-cta-title">
+    <div class="container">
+      <div class="about-cta__panel">
+        <h2 id="about-cta-title" class="about-cta__title">{% loc about 'cta_title' %}</h2>
+        <a class="btn btn--cta about-cta__btn" href="{% url 'catalog:katalog' %}">
+          {% loc about 'cta_button' %}
+        </a>
+      </div>
+    </div>
+  </section>
+</article>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/about.js' %}?v={{ static_version }}" defer></script>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load catalog_tags %}
+
+{% block content %}
+{% loc page 'body' as page_body %}
+<article class="content-page">
+  <h1>{% loc page 'title' %}</h1>
+  <div class="content-page__body">{{ page_body|linebreaks }}</div>
+</article>
+{% endblock %}

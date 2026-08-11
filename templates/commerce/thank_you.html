@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static site_content %}
+
+{% block title %}{{ page_title }} — {{ site_name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/thank_you.css' %}?v={{ static_version }}">
+{% endblock %}
+
+{% block content %}
+<section class="thank-you" aria-labelledby="thank-you-title">
+  <div class="container thank-you__inner">
+    <h1 id="thank-you-title" class="thank-you__title">{% block_plain 'thank_you' 'title' %}</h1>
+
+    {% if order %}
+    <p class="thank-you__meta">
+      {% block_plain 'thank_you' 'order_number' %}:
+      <strong>{{ order.number }}</strong>
+    </p>
+    <p class="thank-you__meta">
+      {% block_plain 'thank_you' 'payment_status' %}:
+      {{ order.get_payment_status_display }}
+    </p>
+
+    {% if is_cod %}
+    <article class="thank-you-card" aria-labelledby="thank-you-cod-title">
+      <h2 id="thank-you-cod-title" class="thank-you-card__title">
+        {% block_plain 'thank_you' 'instructions_cod_title' %}
+      </h2>
+      <p class="thank-you-card__text">
+        {% block_plain 'thank_you' 'instructions_cod_text' %}
+      </p>
+      <p class="thank-you-card__amount">
+        {% block_plain 'thank_you' 'iban_amount_label' %}:
+        <strong>{{ order.total_uah }}&nbsp;₴</strong>
+      </p>
+    </article>
+    {% elif is_iban %}
+    <article class="thank-you-card" aria-labelledby="thank-you-iban-title">
+      <h2 id="thank-you-iban-title" class="thank-you-card__title">
+        {% block_plain 'thank_you' 'instructions_iban_title' %}
+      </h2>
+      <p class="thank-you-card__text">
+        {% block_plain 'thank_you' 'instructions_iban_text' %}
+      </p>
+      {% if iban_details.has_requisites %}
+      <dl class="thank-you-iban">
+        {% if iban_details.recipient %}
+        <div class="thank-you-iban__row">
+          <dt>{% block_plain 'thank_you' 'iban_recipient_label' %}</dt>
+          <dd>{{ iban_details.recipient }}</dd>
+        </div>
+        {% endif %}
+        {% if iban_details.iban %}
+        <div class="thank-you-iban__row">
+          <dt>{% block_plain 'thank_you' 'iban_label' %}</dt>
+          <dd><code>{{ iban_details.iban }}</code></dd>
+        </div>
+        {% endif %}
+        {% if iban_details.edrpou %}
+        <div class="thank-you-iban__row">
+          <dt>{% block_plain 'thank_you' 'iban_edrpou_label' %}</dt>
+          <dd>{{ iban_details.edrpou }}</dd>
+        </div>
+        {% endif %}
+        {% if iban_details.bank %}
+        <div class="thank-you-iban__row">
+          <dt>{% block_plain 'thank_you' 'iban_bank_label' %}</dt>
+          <dd>{{ iban_details.bank }}</dd>
+        </div>
+        {% endif %}
+        <div class="thank-you-iban__row">
+          <dt>{% block_plain 'thank_you' 'iban_purpose_label' %}</dt>
+          <dd>{{ iban_details.purpose }}</dd>
+        </div>
+        <div class="thank-you-iban__row">
+          <dt>{% block_plain 'thank_you' 'iban_amount_label' %}</dt>
+          <dd><strong>{{ order.total_uah }}&nbsp;₴</strong></dd>
+        </div>
+      </dl>
+      {% else %}
+      <p class="thank-you-card__note">{% block_plain 'thank_you' 'iban_missing' %}</p>
+      {% endif %}
+    </article>
+    {% endif %}
+
+    {% else %}
+    <p class="thank-you__meta">{% block_plain 'thank_you' 'text' %}</p>
+    {% endif %}
+
+    <p class="thank-you__actions">
+      <a class="btn" href="{% url 'catalog:katalog' %}">{% block_plain 'site' 'footer_link_all' %}</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

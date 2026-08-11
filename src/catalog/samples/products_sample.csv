@@ -1,0 +1,4 @@
+sku,barcode,name_uk,name_en,composer,category,instruments,genres,level,format,description_uk,price_uah,stock_qty
+NH-IMP-001,4820000000001,Інвенції Баха (імпорт),Bach Inventions,Й. С. Бах,Фортепіано,,Класика,Початківець,Зошит,Демо-опис для CSV імпорту,350.00,5
+NH-IMP-002,4820000000002,Ноктюрни Шопена,Chopin Nocturnes,Ф. Шопен,Фортепіано,,Романтика,Середній,Зошит,Демо Шопен,420.50,3
+,4820000000003,Альбом для юнацтва,Album for the Young,Р. Шуман,Скрипка,,,Початківець,,Без артикула — матч по barcode при повторі,199.00,10

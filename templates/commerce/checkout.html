@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static site_content catalog_tags %}
+
+{% block title %}{{ page_title }} — {{ site_name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/checkout.css' %}?v={{ static_version }}">
+<link rel="stylesheet" href="{% static 'css/pages/checkout-2.css' %}?v={{ static_version }}">
+{% endblock %}
+
+{% block content %}
+<section class="checkout" aria-labelledby="checkout-title">
+  <div class="container">
+    {% include "partials/breadcrumbs.html" %}
+
+    <header class="checkout__head">
+      <h1 id="checkout-title" class="checkout__title">{% block_plain 'checkout' 'title' %}</h1>
+      {% include "commerce/partials/checkout_stepper.html" %}
+    </header>
+
+    <div class="checkout__layout">
+      <aside class="checkout__aside" aria-label="{% block_plain 'checkout' 'order_heading' %}">
+        {% include "commerce/partials/checkout_summary.html" %}
+      </aside>
+
+      <div class="checkout__main">
+        <form
+          method="post"
+          class="checkout__form"
+          id="checkout-form"
+          novalidate
+          data-np-cities-url="{% url 'shipping:np_cities' %}"
+          data-np-warehouses-url="{% url 'shipping:np_warehouses' %}"
+        >
+          {% csrf_token %}
+          {% if form.non_field_errors %}
+          <div class="form-errors checkout-card" role="alert">{{ form.non_field_errors }}</div>
+          {% endif %}
+
+          {% include "commerce/partials/checkout_contact.html" %}
+          {% include "commerce/partials/checkout_shipping.html" %}
+          {% include "commerce/partials/checkout_payment.html" %}
+
+          {{ form.np_city_ref }}
+          {{ form.np_city_name }}
+          {{ form.np_warehouse_ref }}
+          {{ form.np_warehouse_name }}
+          {{ form.np_area_ref }}
+
+          <div class="checkout-submit-bar checkout-submit-bar--mobile">
+            <button
+              type="submit"
+              class="btn btn--cta checkout-submit"
+              data-checkout-submit
+            ><span class="checkout-submit__label">{% block_plain 'checkout' 'submit' %}</span></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/checkout.js' %}?v={{ static_version }}" defer></script>
+{% endblock %}

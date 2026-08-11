@@ -1,0 +1,274 @@
+/* NotenHaus — checkout layout, stepper, cards, form */
+
+.checkout {
+  padding: 1.25rem 0 2.75rem;
+  background:
+    radial-gradient(110% 70% at 100% 0%, rgba(255, 217, 143, 0.16), transparent 52%),
+    linear-gradient(180deg, var(--jwp-color-background-grey) 0%, var(--jwp-color-neutral-0) 46%);
+}
+
+.checkout__head {
+  margin-bottom: 1.35rem;
+}
+
+.checkout__title {
+  margin: 0 0 1rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.7rem, 3.4vw, 2.3rem);
+  color: var(--jwp-color-navy);
+  line-height: 1.15;
+}
+
+/* Stepper */
+.checkout-stepper {
+  margin: 0;
+}
+
+.checkout-stepper__list {
+  list-style: none;
+  margin: 0;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem 0.85rem;
+  background: var(--jwp-color-neutral-0);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.checkout-stepper__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  position: relative;
+}
+
+.checkout-stepper__item:not(:last-child)::after {
+  content: '➔';
+  margin-left: 0.55rem;
+  color: var(--jwp-color-neutral-2);
+  font-size: 0.8rem;
+}
+
+.checkout-stepper__item--done {
+  color: var(--jwp-color-green);
+}
+
+.checkout-stepper__item--active {
+  color: var(--jwp-color-navy);
+  font-weight: 600;
+}
+
+.checkout-stepper__mark,
+.checkout-stepper__dot {
+  display: inline-grid;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.checkout-stepper__mark {
+  background: rgba(0, 131, 92, 0.12);
+  color: var(--jwp-color-green);
+}
+
+.checkout-stepper__mark--muted {
+  background: var(--jwp-color-neutral-1);
+  color: var(--color-text-muted);
+}
+
+.checkout-stepper__dot {
+  background: var(--jwp-color-blue);
+  box-shadow: 0 0 0 3px rgba(33, 88, 229, 0.15);
+}
+
+.checkout-stepper__dot::after {
+  content: '';
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--jwp-color-neutral-0);
+}
+
+.checkout-stepper__num {
+  display: none;
+}
+
+.checkout-stepper__note {
+  color: var(--jwp-color-gold);
+  font-size: 0.85rem;
+}
+
+/* Layout: summary first on mobile */
+.checkout__layout {
+  display: grid;
+  gap: 1.35rem;
+}
+
+.checkout__aside {
+  order: -1;
+}
+
+.checkout__main {
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  .checkout__layout {
+    grid-template-columns: minmax(0, 1.65fr) minmax(17rem, 0.9fr);
+    align-items: start;
+    gap: 1.75rem;
+  }
+
+  .checkout__aside {
+    order: 0;
+    grid-column: 2;
+    position: -webkit-sticky;
+    position: sticky;
+    top: max(1.25rem, env(safe-area-inset-top, 0px));
+  }
+
+  .checkout__main {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .checkout-submit-bar--mobile {
+    display: none;
+  }
+}
+
+/* Cards */
+.checkout-card {
+  background: var(--jwp-color-neutral-0);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.35rem 1.25rem;
+  margin-bottom: 1.1rem;
+}
+
+.checkout-step__head {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.1rem;
+}
+
+.checkout-step__num {
+  display: inline-grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background: var(--jwp-color-blue);
+  color: var(--jwp-color-neutral-0);
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.checkout-step__title {
+  margin: 0;
+  flex: 1;
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  color: var(--jwp-color-navy);
+  line-height: 1.25;
+}
+
+.checkout-step__check {
+  display: inline-grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: rgba(0, 131, 92, 0.12);
+  color: var(--jwp-color-green);
+  font-size: 0.85rem;
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
+}
+
+.checkout-step.is-complete .checkout-step__check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.checkout-step.is-complete .checkout-step__check[hidden] {
+  display: inline-grid;
+}
+
+.checkout-logged {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  margin: 0 0 1rem;
+  padding: 0.65rem 0.75rem;
+  background: rgba(255, 217, 143, 0.35);
+  border: 1px solid rgba(255, 217, 143, 0.8);
+  border-radius: 6px;
+  color: var(--jwp-color-text-body);
+  font-size: 0.92rem;
+}
+
+.checkout-logged__mark {
+  color: var(--jwp-color-green);
+  font-weight: 700;
+}
+
+.checkout-grid {
+  display: grid;
+  gap: 0.85rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .checkout-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .form-field--full {
+    grid-column: 1 / -1;
+  }
+}
+
+.checkout .form-field {
+  margin-bottom: 0;
+  position: relative;
+}
+
+.checkout-hint {
+  margin: 0.2rem 0 0;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.checkout-input:focus {
+  border-color: var(--jwp-color-maroon);
+  box-shadow: 0 0 0 3px rgba(99, 10, 34, 0.1);
+  outline: none;
+}
+
+.checkout .form-field.is-invalid .checkout-input,
+.checkout .form-field.is-invalid .form-control {
+  border-color: var(--jwp-color-error-red);
+}
+
+@media (max-width: 639px) {
+  .checkout-stepper__list {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .checkout-stepper__item:not(:last-child)::after {
+    display: none;
+  }
+}

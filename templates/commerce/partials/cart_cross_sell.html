@@ -1,0 +1,57 @@
+{% load catalog_tags site_content %}
+{% if cross_sell_products %}
+<details class="cart-cross" open>
+  <summary class="cart-cross__summary">
+    <span>{% loc cart_settings 'cross_sell_title' %}</span>
+  </summary>
+  <ul class="cart-cross__list">
+    {% for product in cross_sell_products %}
+    {% loc product as product_name %}
+    <li class="cart-cross__item">
+      <a class="cart-cross__cover" href="{% url 'catalog:nota_detail' product.slug %}">
+        {% with img=product.main_images.0 %}
+          {% if img %}
+          {% loc img 'alt' as img_alt %}
+          <img
+            src="{{ img.image.url }}"
+            alt="{{ img_alt|default:product_name }}"
+            width="56"
+            height="72"
+            loading="lazy"
+            decoding="async"
+          >
+          {% else %}
+          <span class="cart-cross__cover-ph" aria-hidden="true"></span>
+          {% endif %}
+        {% endwith %}
+      </a>
+      <div class="cart-cross__meta">
+        <a class="cart-cross__title" href="{% url 'catalog:nota_detail' product.slug %}">
+          {{ product_name }}
+        </a>
+        {% if product.composer %}
+        <p class="cart-cross__composer">{% loc product.composer %}</p>
+        {% endif %}
+        <p class="cart-cross__price">{{ product.price_uah }}&nbsp;₴</p>
+      </div>
+      {% if product.is_in_stock %}
+      <form
+        method="post"
+        action="{% url 'commerce:cart_add' product.id %}"
+        hx-post="{% url 'commerce:cart_add' product.id %}"
+        hx-target="#cart-root"
+        hx-swap="innerHTML"
+      >
+        {% csrf_token %}
+        <input type="hidden" name="qty" value="1">
+        <input type="hidden" name="refresh_cart" value="1">
+        <button type="submit" class="btn cart-cross__add">{% block_plain 'cart' 'add' %}</button>
+      </form>
+      {% else %}
+      <span class="cart-cross__oos">{% block_plain 'catalog' 'out_of_stock' %}</span>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</details>
+{% endif %}

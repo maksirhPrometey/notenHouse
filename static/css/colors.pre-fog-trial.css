@@ -1,0 +1,196 @@
+/*
+  J.W. Pepper — color tokens
+  Source: https://www.jwpepper.com/piano
+  Extracted from live CSS custom properties (--jwp-*) + computed UI usage.
+
+  BASE   — нейтралі, фони, текст, бордери (структура UI)
+  ACCENT — бренд, CTA, badges, статус, посилання
+*/
+
+:root {
+  /* =========================================================
+     BASE — Neutral scale
+     ========================================================= */
+  --jwp-color-neutral-0: #ffffff;
+  --jwp-color-neutral-1: #f6f4f5;
+  --jwp-color-neutral-2: #e2e2e2;
+  --jwp-color-neutral-3: #606060;
+  --jwp-color-neutral-4: #423f47;
+  --jwp-color-neutral-5: #1c1c1c;
+
+  --jwp-color-white: #ffffff;
+  --jwp-color-white-10-percent: rgba(255, 255, 255, 0.1);
+  --jwp-color-body-bkg: #ffffff;
+  --jwp-color-background-grey: #f1f2f3;
+  --jwp-color-light-grey: #f6f4f5;
+  --jwp-color-table-grey: #d7d5d6;
+  --jwp-color-medium-grey: #b8c1cb;
+  --jwp-color-grey: #e0dadb;
+  --jwp-color-dim-grey: #777475;
+  --jwp-color-dark-grey: #423f47;
+  --jwp-color-neutral-grey: #737373;
+
+  --jwp-color-black: #1c1c1c;
+  --jwp-color-black-soft: #353535;
+  --jwp-color-black-accent: #3d3d3d;
+  --jwp-color-badge-black: #282828;
+
+  --jwp-color-border: #e0dadb;
+  --jwp-color-border-light: rgba(224, 218, 219, 0.4);
+  --jwp-color-border-blue-grey: #c9d1dd;
+
+  /* Body / headings computed on /piano */
+  --jwp-color-text-body: #171a1c;
+
+  /* =========================================================
+     BASE — Text hierarchy
+     ========================================================= */
+  --jwp-text-color-0: #1c1c1c;
+  --jwp-text-color-1: #2c566e;
+  --jwp-text-color-2: #717584;
+  --jwp-text-color-primary: #1c1c1c;
+  --jwp-text-color-secondary: #2c566e;
+  --jwp-text-color-tertiary: #717584;
+
+  /* =========================================================
+     ACCENT — Brand maroon (primary brand / CTA)
+     ========================================================= */
+  --jwp-color-maroon: #630a22;
+  --jwp-color-maroon-accent: #8c0d30;
+  --jwp-color-maroon-dark: #340814;
+  --jwp-color-maroon-faded: #866e77;
+  --jwp-color-crimson: #75202c;
+
+  /* =========================================================
+     ACCENT — Gold / Yellow (cart badge, highlights)
+     ========================================================= */
+  --jwp-color-gold: #ffd98f;
+  --jwp-color-imprinting-gold: #ffd700;
+  --jwp-color-yellow: #ffb338;
+  --jwp-color-brown: #a06607;
+  --jwp-color-tan: #fff0d8;
+
+  /* =========================================================
+     ACCENT — Blue family (links, badges, focus)
+     ========================================================= */
+  --jwp-color-blue: #2158e5;
+  --jwp-color-blurple: #7887f7;
+  --jwp-color-light-azure: #487fd1;
+  --jwp-color-badge-blue: #2666c2;
+  --jwp-color-focus-ring: #8db6fa;
+  --jwp-text-link-color: #2188ae;
+  --jwp-text-link-button-blue: #4667d2;
+  --jwp-color-myscore-blue: #34638a;
+  --jwp-color-myscore-blue-grey: #5e5a66;
+  --jwp-color-navy: #1b3650;
+
+  /* =========================================================
+     ACCENT — Red / Error / Badges
+     ========================================================= */
+  --jwp-color-error-red: #ed1c24;
+  --jwp-color-badge-red: #ed1c24;
+  --jwp-color-badge-red-light: #fff1f5;
+  --jwp-color-badge-red-secondary: #e5412f;
+  --jwp-color-badge-red-tertiary: #ec2227;
+
+  /* =========================================================
+     ACCENT — Green / Teal
+     ========================================================= */
+  --jwp-color-green: #00835c;
+  --jwp-color-green-accent: #019e70;
+  --jwp-color-forest-green: #4a6740;
+  --jwp-color-teal: #c2eade;
+  --jwp-color-badge-turquoise-dark: #133e4f;
+  --jwp-color-badge-turquoise-light: #208182;
+
+  /* =========================================================
+     ACCENT — Purple / Plum / Orange
+     ========================================================= */
+  --jwp-color-purple: #5e2ac4;
+  --jwp-color-plum: #552a6b;
+  --jwp-color-myscore-orange: #eb8f2c;
+
+  /* =========================================================
+     ROLE MAP — semantic aliases (base vs accent)
+     ========================================================= */
+
+  /* BASE roles */
+  --color-bg: var(--jwp-color-body-bkg);
+  --color-bg-muted: var(--jwp-color-light-grey);
+  --color-bg-grey: var(--jwp-color-background-grey);
+  --color-bg-surface: var(--jwp-color-neutral-0);
+  --color-bg-sidebar: var(--jwp-color-neutral-1);
+  --color-surface: var(--jwp-color-white);
+  --color-border: var(--jwp-color-border);
+  --color-border-subtle: var(--jwp-color-border-light);
+  --color-text: var(--jwp-color-black);
+  --color-text-body: var(--jwp-color-text-body);
+  --color-text-muted: var(--jwp-color-dim-grey);
+  --color-text-secondary: var(--jwp-text-color-secondary);
+  --color-text-tertiary: var(--jwp-text-color-tertiary);
+  --color-header-bg: var(--jwp-color-navy);
+  --color-header-utility: var(--jwp-color-navy);
+  --color-header-main: var(--jwp-color-navy);
+  --color-header-fg: var(--jwp-color-white);
+  --color-footer-bg: var(--jwp-color-navy);
+  --color-footer-bg-mid: var(--jwp-color-maroon-dark);
+  --color-footer-bg-end: var(--jwp-color-maroon);
+  --color-footer-gradient: linear-gradient(
+    125deg,
+    var(--color-footer-bg) 0%,
+    var(--color-footer-bg-mid) 48%,
+    var(--color-footer-bg-end) 100%
+  );
+  --color-footer-fg: var(--jwp-color-white);
+
+  /* ACCENT roles */
+  --color-brand: var(--jwp-color-maroon);
+  --color-brand-hover: var(--jwp-color-maroon-accent);
+  --color-brand-dark: var(--jwp-color-maroon-dark);
+  --color-brand-soft: var(--jwp-color-crimson);
+  --color-accent-gold: var(--jwp-color-gold);
+  --color-accent-yellow: var(--jwp-color-yellow);
+  --color-link: var(--jwp-color-blue);
+  --color-link-alt: var(--jwp-text-link-color);
+  --color-link-button: var(--jwp-text-link-button-blue);
+  --color-badge-new: var(--jwp-color-light-azure);
+  --color-badge-cart: var(--jwp-color-gold);
+  --color-badge-alert: var(--jwp-color-badge-red);
+  --color-success: var(--jwp-color-green);
+  --color-success-hover: var(--jwp-color-green-accent);
+  --color-error: var(--jwp-color-error-red);
+  --color-focus: var(--jwp-color-focus-ring);
+  --color-cta: var(--jwp-color-maroon);
+  --color-cta-hover: var(--jwp-color-maroon-accent);
+
+  /* Buttons — окремі токени (ActiveTheme override) */
+  --color-btn-cta: var(--color-cta);
+  --color-btn-cta-hover: var(--color-cta-hover);
+  --color-btn-search: var(--color-accent-yellow);
+  --color-btn-search-hover: var(--color-accent-gold);
+  --color-btn-newsletter: var(--color-brand);
+  --color-btn-newsletter-hover: var(--color-brand-hover);
+  --color-btn-ghost: var(--color-text);
+  --color-btn-ghost-hover-bg: var(--color-bg-muted);
+
+  /* Badge tones on product cards */
+  --color-badge-yellow: var(--jwp-color-yellow);
+  --color-badge-maroon: var(--jwp-color-maroon);
+  --color-badge-blue: var(--jwp-color-blue);
+  --color-badge-gold: var(--jwp-color-gold);
+
+  /* Typography stacks */
+  --font-serif: Georgia, "Times New Roman", "Palatino Linotype", serif;
+  --font-sans: "Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  /* Dashboard / User Studio */
+  --color-dashboard-bg: var(--jwp-color-neutral-1);
+  --color-card-bg: var(--jwp-color-neutral-0);
+  --color-text-main: var(--jwp-color-text-body);
+
+  /* Breadcrumbs */
+  --breadcrumb-link-color: var(--jwp-color-navy);
+  --breadcrumb-hover-color: var(--jwp-color-maroon);
+  --breadcrumb-active-color: var(--jwp-color-dim-grey);
+  --breadcrumb-separator-color: var(--jwp-color-medium-grey);
+}

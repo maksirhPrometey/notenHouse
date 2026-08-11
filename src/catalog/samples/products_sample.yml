@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE yml_catalog SYSTEM "shops.dtd">
+<yml_catalog date="2026-07-30 12:00">
+  <shop>
+    <name>NotenHaus Sample</name>
+    <categories>
+      <category id="1">Фортепіано</category>
+      <category id="2">Класика</category>
+    </categories>
+    <offers>
+      <offer id="YML-001" available="true">
+        <url>https://example.com/nota/yml-001/</url>
+        <price>350.00</price>
+        <currencyId>UAH</currencyId>
+        <categoryId>1</categoryId>
+        <name>Інвенції Баха (YML)</name>
+        <vendor>Й. С. Бах</vendor>
+        <vendorCode>NH-YML-001</vendorCode>
+        <barcode>4820000000101</barcode>
+        <description>Демо-опис для YML імпорту</description>
+        <stock_quantity>4</stock_quantity>
+      </offer>
+      <offer id="YML-002" available="true">
+        <price>280.00</price>
+        <currencyId>UAH</currencyId>
+        <categoryId>2</categoryId>
+        <name>Сонатини Клементі</name>
+        <vendor>М. Клементі</vendor>
+        <vendorCode>NH-YML-002</vendorCode>
+        <barcode>4820000000102</barcode>
+        <description>Категорія «Класика» зматчиться на Genre якщо вже є</description>
+        <stock_quantity>2</stock_quantity>
+      </offer>
+    </offers>
+  </shop>
+</yml_catalog>

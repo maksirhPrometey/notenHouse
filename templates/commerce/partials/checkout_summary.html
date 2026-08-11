@@ -1,0 +1,72 @@
+{% load site_content catalog_tags %}
+<div class="checkout-summary checkout-card" data-checkout-summary>
+  <div class="checkout-summary__head">
+    <h2 class="checkout-summary__title">{% block_plain 'checkout' 'order_heading' %}</h2>
+    <a class="checkout-summary__edit" href="{% url 'commerce:cart' %}">
+      {% block_plain 'checkout' 'edit_cart' %}
+    </a>
+  </div>
+
+  <ul class="checkout-summary__items">
+    {% for item in items %}
+    {% with product=item.product %}
+    {% loc product as product_name %}
+    <li class="checkout-summary__item">
+      <a class="checkout-summary__cover" href="{% url 'catalog:nota_detail' product.slug %}">
+        {% with img=product.main_images.0 %}
+          {% if img %}
+          {% loc img 'alt' as img_alt %}
+          <img
+            src="{{ img.image.url }}"
+            alt="{{ img_alt|default:product_name }}"
+            width="56"
+            height="74"
+            loading="lazy"
+            decoding="async"
+          >
+          {% else %}
+          <span class="checkout-summary__cover-ph" aria-hidden="true"></span>
+          {% endif %}
+        {% endwith %}
+      </a>
+      <div class="checkout-summary__meta">
+        <p class="checkout-summary__name">
+          <a href="{% url 'catalog:nota_detail' product.slug %}">{{ product_name }}</a>
+        </p>
+        <p class="checkout-summary__qty">× {{ item.qty }}</p>
+      </div>
+      <p class="checkout-summary__line">{{ item.line_total }}&nbsp;₴</p>
+    </li>
+    {% endwith %}
+    {% endfor %}
+  </ul>
+
+  <dl class="checkout-summary__totals">
+    <div class="checkout-summary__row">
+      <dt>{% block_plain 'checkout' 'subtotal_label' %}</dt>
+      <dd>{{ total }}&nbsp;₴</dd>
+    </div>
+    <div class="checkout-summary__row">
+      <dt>{% block_plain 'checkout' 'shipping_label' %}</dt>
+      <dd>{% block_plain 'checkout' 'shipping_carrier' %}</dd>
+    </div>
+    <div class="checkout-summary__row checkout-summary__row--pay">
+      <dt>{% block_plain 'checkout' 'total_label' %}</dt>
+      <dd><strong>{{ total }}&nbsp;₴</strong></dd>
+    </div>
+  </dl>
+
+  <button
+    type="submit"
+    form="checkout-form"
+    class="btn btn--cta checkout-submit checkout-submit--aside"
+    data-checkout-submit
+  ><span class="checkout-submit__label">{% block_plain 'checkout' 'submit' %}</span></button>
+
+  <ul class="checkout-trust" aria-label="{% block_plain 'checkout' 'trust_aria' %}">
+    <li class="checkout-trust__item">
+      <span class="checkout-trust__icon checkout-trust__icon--pack" aria-hidden="true"></span>
+      <span>{% block_plain 'checkout' 'trust_pack' %}</span>
+    </li>
+  </ul>
+</div>

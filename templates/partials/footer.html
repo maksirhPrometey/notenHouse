@@ -1,0 +1,62 @@
+{% load site_content %}
+<footer class="site-footer">
+  <div class="site-footer__main container">
+    <div class="site-footer__col site-footer__col--brand">
+      {% include "partials/site_logo.html" with logo_class="site-logo--footer" %}
+      <p class="site-footer__tagline">{% block_plain 'site' 'footer_tagline' %}</p>
+      <p class="site-footer__meta">{% block_plain 'site' 'footer_lang_meta' %}</p>
+      <p class="site-footer__meta">{% block_plain 'site' 'footer_currency_meta' %}</p>
+    </div>
+
+    <div class="site-footer__col">
+      <p class="site-footer__heading">{% block_plain 'site' 'footer_col_catalog' %}</p>
+      <ul class="site-footer__list">
+        <li><a href="{% url 'catalog:katalog' %}">{% block_plain 'site' 'footer_link_all' %}</a></li>
+        <li><a href="{% url 'catalog:search' %}">{% block_plain 'site' 'footer_link_search' %}</a></li>
+      </ul>
+    </div>
+
+    <div class="site-footer__col">
+      <p class="site-footer__heading">{% block_plain 'site' 'footer_col_service' %}</p>
+      <ul class="site-footer__list">
+        <li><a href="{% url 'content:shipping_payment' %}">{% block_plain 'site' 'footer_link_shipping' %}</a></li>
+        <li><a href="{% url 'content:contacts' %}">{% block_plain 'site' 'footer_link_contacts' %}</a></li>
+        <li><a href="{% url 'content:about' %}">{% block_plain 'site' 'footer_link_about' %}</a></li>
+      </ul>
+    </div>
+
+    <div class="site-footer__col site-footer__col--newsletter">
+      <p class="site-footer__heading">{% block_plain 'site' 'footer_col_contacts' %}</p>
+      {% if site_contacts.email %}
+      <p class="site-footer__contact">
+        <a href="mailto:{{ site_contacts.email }}">{{ site_contacts.email }}</a>
+      </p>
+      {% endif %}
+      {% if site_contacts.phones %}
+      <p class="site-footer__contact">
+        {% for phone in site_contacts.phones %}
+        <a href="tel:{{ phone }}">{{ phone }}</a>{% if not forloop.last %}<br>{% endif %}
+        {% endfor %}
+      </p>
+      {% endif %}
+      {% if site_contacts.hours %}
+      <p class="site-footer__hours">{{ site_contacts.hours }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="site-footer__bottom">
+    <div class="site-footer__inner container">
+      <nav class="site-footer__bottom-nav" aria-label="{% block_plain 'site' 'footer_col_service' %}">
+        <a href="{% url 'catalog:katalog' %}">{% block_plain 'site' 'header_nav_catalog' %}</a>
+        <a href="{% url 'content:about' %}">{% block_plain 'site' 'footer_link_about' %}</a>
+        <a href="{% url 'content:shipping_payment' %}">{% block_plain 'site' 'footer_link_shipping' %}</a>
+        <a href="{% url 'content:contacts' %}">{% block_plain 'site' 'footer_link_contacts' %}</a>
+      </nav>
+      <p class="site-footer__copy">
+        &copy; {% now "Y" %} {{ site_name }}<br>
+        <a href="https://www.prometeylabs.com/" target="_blank" rel="noopener noreferrer">{% block_plain 'site' 'footer_credit' %}</a>
+      </p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,27 @@
+{% load site_content %}
+<nav class="cabinet-nav" aria-label="{% block_plain 'cabinet' 'nav_aria' %}" role="tablist">
+  <a
+    href="{% url 'cabinet:dashboard' %}"
+    role="tab"
+    {% if active == 'dashboard' %}aria-selected="true" aria-current="page"{% else %}aria-selected="false"{% endif %}
+  >{% block_plain 'cabinet' 'nav_dashboard' %}</a>
+  <a
+    href="{% url 'cabinet:orders' %}"
+    role="tab"
+    {% if active == 'orders' %}aria-selected="true" aria-current="page"{% else %}aria-selected="false"{% endif %}
+  >{% block_plain 'cabinet' 'nav_orders' %}</a>
+  <a
+    href="{% url 'cabinet:wishlist' %}"
+    role="tab"
+    {% if active == 'wishlist' %}aria-selected="true" aria-current="page"{% else %}aria-selected="false"{% endif %}
+  >{% block_plain 'cabinet' 'nav_wishlist' %}</a>
+  <a
+    href="{% url 'cabinet:profile' %}"
+    role="tab"
+    {% if active == 'profile' %}aria-selected="true" aria-current="page"{% else %}aria-selected="false"{% endif %}
+  >{% block_plain 'cabinet' 'nav_profile' %}</a>
+  <form method="post" action="{% url 'cabinet:logout' %}" class="cabinet-nav__logout">
+    {% csrf_token %}
+    <button type="submit">{% block_plain 'cabinet' 'logout' %}</button>
+  </form>
+</nav>

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/cabinet.css' %}?v={{ static_version }}">
+{% endblock %}
+
+{% block content %}
+<section class="cabinet cabinet--studio container">
+  {% include "partials/breadcrumbs.html" %}
+  {% include "cabinet/partials/nav.html" with active="orders" %}
+
+  <div class="cabinet__content studio">
+    <p class="studio-back">
+      <a href="{% url 'cabinet:orders' %}">← Усі замовлення</a>
+    </p>
+
+    <header class="studio-page-head studio-page-head--row">
+      <div>
+        <h1>Замовлення №{{ order.number }}</h1>
+        <p class="studio-page-head__sub">
+          {{ order.created_at|date:"d.m.Y H:i" }}
+        </p>
+      </div>
+      <span class="status-pill status-pill--{{ pill_tone }}">{{ pill_label }}</span>
+    </header>
+
+    <div class="studio-order-meta">
+      <p><span>Оплата</span> {{ order.get_payment_status_display }}</p>
+      <p>
+        <span>Доставка</span>
+        {{ order.get_shipping_method_display }}{% if order.np_warehouse_name %}
+        — {{ order.np_city_name }}, {{ order.np_warehouse_name }}{% endif %}
+      </p>
+    </div>
+
+    <div class="cabinet-table-wrap">
+      <table class="cabinet-orders-table">
+        <thead>
+          <tr>
+            <th>Товар</th>
+            <th>Кількість</th>
+            <th>Ціна</th>
+            <th>Сума</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in order.items.all %}
+          <tr>
+            <td>{{ item.product_name }}</td>
+            <td>{{ item.qty }}</td>
+            <td>{{ item.unit_price_uah }}&nbsp;₴</td>
+            <td>{{ item.line_total_uah }}&nbsp;₴</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <p class="cabinet-order-total">Разом: <strong>{{ order.total_uah }}&nbsp;₴</strong></p>
+
+    <div class="studio-order-actions">
+      <form method="post" action="{% url 'cabinet:order_reorder' order.number %}">
+        {% csrf_token %}
+        <button type="submit" class="btn">Повторити замовлення</button>
+      </form>
+      {% if order.payment_status == 'awaiting' %}
+      <a class="btn btn--ghost" href="{% url 'commerce:payment_retry' %}?order={{ order.number }}">
+        Спробувати оплатити ще раз
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

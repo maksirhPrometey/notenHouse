@@ -1,0 +1,186 @@
+/* NotenHaus — homepage hero + section rhythm */
+
+.hero-banner {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
+.hero-banner__shell {
+  position: relative;
+  overflow: hidden;
+  contain: paint;
+  width: 100%;
+  max-width: 100%;
+  background:
+    linear-gradient(
+      125deg,
+      var(--jwp-color-navy) 0%,
+      var(--jwp-color-maroon-dark) 48%,
+      var(--jwp-color-maroon) 100%
+    );
+  color: var(--hero-text-color, var(--jwp-color-neutral-0));
+  min-height: clamp(16rem, 42vw, 22rem);
+  display: flex;
+  align-items: center;
+}
+
+.hero-banner__shell--has-media {
+  background: none;
+}
+
+.hero-banner__slides,
+.hero-banner__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.hero-banner__shell--has-media .hero-banner__slides,
+.hero-banner__shell--has-media .hero-banner__bg {
+  opacity: 1;
+}
+
+.hero-banner__slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-banner__accent {
+  position: absolute;
+  inset: auto 0 0 auto;
+  width: min(42%, 18rem);
+  max-width: 100%;
+  height: min(70%, 18rem);
+  background: var(--color-accent-yellow);
+  opacity: 0.18;
+  transform: none;
+  pointer-events: none;
+}
+
+.hero-banner__accent::before {
+  content: "";
+  position: absolute;
+  inset: 12% 12% auto auto;
+  width: 55%;
+  height: 55%;
+  background: var(--color-accent-gold);
+  opacity: 0.55;
+  transform: none;
+}
+
+@media (max-width: 767px) {
+  .hero-banner__accent {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-banner__accent {
+    inset: auto 0 -18% auto;
+    width: min(48%, 22rem);
+    height: min(55vw, 28rem);
+    transform: rotate(18deg);
+    transform-origin: 100% 100%;
+  }
+
+  .hero-banner__accent::before {
+    inset: 18% auto auto 8%;
+    width: 70%;
+    height: 70%;
+    transform: rotate(-12deg);
+  }
+}
+
+.hero-banner__inner {
+  position: relative;
+  z-index: 1;
+  padding-block: 2.5rem;
+  max-width: 40rem;
+  animation: hero-rise 520ms ease both;
+}
+
+.hero-banner__brand,
+.hero-banner__title,
+.hero-banner__lead {
+  color: var(--hero-text-color, var(--jwp-color-neutral-0));
+}
+
+.hero-banner__brand {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 4.5vw, 2.65rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.hero-banner__title {
+  margin: 0;
+  font-size: clamp(1.2rem, 2.8vw, 1.65rem);
+  font-weight: 600;
+  max-width: 26ch;
+}
+
+.hero-banner__lead {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  max-width: 40ch;
+  opacity: 0.92;
+}
+
+.hero-banner__actions {
+  margin: 1.35rem 0 0;
+}
+
+.hero-banner .btn--cta {
+  background: var(--color-btn-cta);
+  box-shadow: 0 8px 24px rgba(28, 28, 28, 0.22);
+}
+
+.hero-banner .btn--cta:hover,
+.hero-banner .btn--cta:focus-visible {
+  background: var(--color-btn-cta-hover);
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-banner__inner {
+    animation: none;
+  }
+
+  .product-card__img {
+    transition: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-banner__inner {
+    padding-block: 3.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-banner__shell {
+    min-height: 24rem;
+  }
+}

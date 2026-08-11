@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% load static catalog_tags %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/cabinet.css' %}?v={{ static_version }}">
+<link rel="stylesheet" href="{% static 'css/components/cabinet-dashboard.css' %}?v={{ static_version }}">
+<link rel="stylesheet" href="{% static 'css/components/product-grid.css' %}?v={{ static_version }}">
+<link rel="stylesheet" href="{% static 'css/components/product-card.css' %}?v={{ static_version }}">
+<link rel="stylesheet" href="{% static 'css/components/wishlist.css' %}?v={{ static_version }}">
+{% endblock %}
+
+{% block content %}
+<section class="cabinet cabinet--studio container">
+  {% include "partials/breadcrumbs.html" %}
+  {% include "cabinet/partials/nav.html" with active="dashboard" %}
+
+  <div class="cabinet__content studio">
+    <header class="studio-welcome">
+      <div class="studio-welcome__copy">
+        <h1 class="studio-welcome__title">
+          Вітаємо, {{ display_name }}!&nbsp;<span aria-hidden="true">🎼</span>
+        </h1>
+        {% if primary_instrument %}
+        <p class="studio-welcome__tagline">
+          Ваш основний інструмент: {% loc primary_instrument %}
+        </p>
+        {% else %}
+        <p class="studio-welcome__tagline">
+          Ваша персональна студія нот — замовлення, обране та профіль в одному місці
+        </p>
+        {% endif %}
+      </div>
+
+      <div
+        class="studio-loyalty"
+        role="status"
+        aria-label="Музичний рівень: {{ loyalty.label }}"
+      >
+        <div class="studio-loyalty__head">
+          <span class="studio-loyalty__badge">{{ loyalty.label }}</span>
+          <span class="studio-loyalty__meta">Музичний рівень</span>
+        </div>
+        <div
+          class="studio-loyalty__track"
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="{{ loyalty.progress }}"
+          aria-valuetext="{{ loyalty.label }}"
+        >
+          <svg
+            class="studio-loyalty__bar"
+            viewBox="0 0 100 1"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <defs>
+              <linearGradient id="studio-loyalty-grad" x1="0" y1="0" x2="1" y2="0">
+                <stop class="studio-loyalty__stop-start" offset="0"/>
+                <stop class="studio-loyalty__stop-end" offset="1"/>
+              </linearGradient>
+            </defs>
+            <rect
+              class="studio-loyalty__fill"
+              x="0"
+              y="0"
+              width="{{ loyalty.progress|default:0 }}"
+              height="1"
+              fill="url(#studio-loyalty-grad)"
+            />
+          </svg>
+        </div>
+        <p class="studio-loyalty__hint">
+          {% if loyalty.next_label %}
+          Ще {{ loyalty.orders_to_next }} зам. до рівня {{ loyalty.next_label }}
+          {% else %}
+          Максимальний рівень — Fortissimo
+          {% endif %}
+        </p>
+      </div>
+    </header>
+
+    <div class="studio-stats" role="list">
+      <a class="studio-stat" href="{% url 'cabinet:orders' %}" role="listitem">
+        <span class="studio-stat__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M3 7.5h18v11a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5v-11Z"/>
+            <path d="M3 7.5 5.2 3.8A1.5 1.5 0 0 1 6.5 3h11a1.5 1.5 0 0 1 1.3.8L21 7.5"/>
+            <path d="M9.5 12.5h5"/>
+          </svg>
+        </span>
+        <span class="studio-stat__title">Замовлення</span>
+        <span class="studio-stat__value">{{ order_count }}</span>
+        <span class="studio-stat__sub">
+          {% if active_deliveries == 1 %}
+          1 активна доставка
+          {% elif active_deliveries %}
+          {{ active_deliveries }} активних доставок
+          {% else %}
+          Немає активних доставок
+          {% endif %}
+        </span>
+        <span class="studio-stat__link">Усі замовлення →</span>
+      </a>
+
+      <a class="studio-stat studio-stat--heart" href="{% url 'cabinet:wishlist' %}" role="listitem">
+        <span class="studio-stat__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M12 20s-7-4.4-9.2-8.2C1.2 9.2 2.4 6 5.4 5.4c1.7-.3 3.3.4 4.2 1.7C10.5 5.8 12.1 5.1 13.8 5.4c3 .6 4.2 3.8 2.6 6.4C16.2 15.6 12 20 12 20Z"/>
+          </svg>
+        </span>
+        <span class="studio-stat__title">Обране</span>
+        <span class="studio-stat__value">{{ wishlist_count }}</span>
+        <span class="studio-stat__sub">Збережені ноти</span>
+        <span class="studio-stat__link">Переглянути список →</span>
+      </a>
+
+      <a class="studio-stat" href="{% url 'cabinet:profile' %}" role="listitem">
+        <span class="studio-stat__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="12" cy="8" r="3.2"/>
+            <path d="M5 19.2c1.4-3.2 3.8-4.7 7-4.7s5.6 1.5 7 4.7"/>
+          </svg>
+        </span>
+        <span class="studio-stat__title">Профіль</span>
+        <span class="studio-stat__value studio-stat__value--sm">Налаштування</span>
+        <span class="studio-stat__sub">Дані та пароль</span>
+        <span class="studio-stat__link">Відкрити профіль →</span>
+      </a>
+    </div>
+
+    <section class="studio-section" aria-labelledby="studio-orders-heading">
+      <div class="studio-section__head">
+        <h2 id="studio-orders-heading">Останні замовлення</h2>
+        {% if recent_orders %}
+        <a class="studio-section__more" href="{% url 'cabinet:orders' %}">Усі →</a>
+        {% endif %}
+      </div>
+
+      {% if recent_orders %}
+      <ol class="studio-timeline">
+        {% for order in recent_orders %}
+        <li class="studio-timeline__item">
+          <div class="studio-timeline__rail" aria-hidden="true"></div>
+          <div class="studio-timeline__card">
+            <div class="studio-timeline__main">
+              <a class="studio-timeline__number" href="{% url 'cabinet:order_detail' order.number %}">
+                №{{ order.number }}
+              </a>
+              <time class="studio-timeline__date" datetime="{{ order.created_at|date:'Y-m-d' }}">
+                {{ order.created_at|date:"d.m.Y" }}
+              </time>
+              <span class="status-pill status-pill--{{ order.pill_tone }}">
+                {{ order.pill_label }}
+              </span>
+              <span class="studio-timeline__total">{{ order.total_uah }}&nbsp;₴</span>
+            </div>
+            <form
+              method="post"
+              action="{% url 'cabinet:order_reorder' order.number %}"
+              class="studio-timeline__action"
+            >
+              {% csrf_token %}
+              <button type="submit" class="btn btn--ghost">Повторити замовлення</button>
+            </form>
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+      {% else %}
+      <div class="studio-empty">
+        <span class="studio-empty__clef" aria-hidden="true">𝄞</span>
+        <p class="studio-empty__text">Замовлень поки немає — час обрати перші ноти</p>
+        <a class="btn" href="{% url 'catalog:katalog' %}">Переглянути каталог нот</a>
+      </div>
+      {% endif %}
+    </section>
+
+    {% if recommendations %}
+    <section class="studio-section studio-section--recs" aria-labelledby="studio-recs-heading">
+      <div class="studio-section__head">
+        <h2 id="studio-recs-heading">
+          {% if recommend_instrument %}
+          Нові ноти для {% loc recommend_instrument %}
+          {% else %}
+          Персональні рекомендації
+          {% endif %}
+        </h2>
+        {% if recommend_instrument %}
+        <a
+          class="studio-section__more"
+          href="{% url 'catalog:katalog_slug' recommend_instrument.slug %}"
+        >Більше →</a>
+        {% endif %}
+      </div>
+      {% include "catalog/partials/product_grid.html" with products=recommendations grid_cols=4 %}
+    </section>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

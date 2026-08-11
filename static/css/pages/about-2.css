@@ -1,0 +1,133 @@
+/* NotenHaus — About musical micro-interactions */
+
+@keyframes aboutStaffDrift {
+  0% {
+    opacity: 0.55;
+    transform: translate3d(-1.5%, 0, 0) scaleX(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(1.5%, 0, 0) scaleX(1.02);
+  }
+}
+
+.timeline__notes,
+.value-card__notes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.timeline__notes i,
+.value-card__notes i {
+  position: absolute;
+  left: 50%;
+  top: 35%;
+  margin: 0;
+  font-style: normal;
+  font-size: 0.85rem;
+  line-height: 1;
+  color: var(--jwp-color-maroon);
+  opacity: 0;
+  transform: translate3d(-50%, 0, 0);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.timeline__notes i:nth-child(1),
+.value-card__notes i:nth-child(1) {
+  left: 22%;
+  --note-x: -8px;
+  --note-delay: 0ms;
+}
+
+.timeline__notes i:nth-child(2),
+.value-card__notes i:nth-child(2) {
+  left: 48%;
+  --note-x: 2px;
+  --note-delay: 70ms;
+  color: var(--jwp-color-navy);
+}
+
+.timeline__notes i:nth-child(3),
+.value-card__notes i:nth-child(3) {
+  left: 70%;
+  --note-x: 8px;
+  --note-delay: 130ms;
+  color: var(--jwp-color-maroon-accent);
+}
+
+.value-card__notes i:nth-child(4) {
+  left: 86%;
+  --note-x: 12px;
+  --note-delay: 180ms;
+  color: var(--jwp-color-gold);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .value-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    border-color: var(--jwp-color-maroon);
+  }
+
+  .value-card:hover .value-card__notes i,
+  .timeline__item:hover .timeline__notes i {
+    animation: aboutNoteFloat 0.85s ease var(--note-delay, 0ms) both;
+  }
+
+  .timeline__item:hover .timeline__marker {
+    background: var(--jwp-color-maroon);
+    color: var(--jwp-color-neutral-0);
+    border-color: var(--jwp-color-maroon);
+  }
+}
+
+.value-card:focus-visible {
+  outline: 2px solid var(--jwp-color-focus-ring, #8db6fa);
+  outline-offset: 3px;
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  border-color: var(--jwp-color-maroon);
+}
+
+.value-card:focus-visible .value-card__notes i,
+.timeline__item:focus-within .timeline__notes i {
+  animation: aboutNoteFloat 0.85s ease var(--note-delay, 0ms) both;
+}
+
+@keyframes aboutNoteFloat {
+  0% {
+    opacity: 0;
+    transform: translate3d(-50%, 0, 0) scale(0.7);
+  }
+  25% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(-50% + var(--note-x, 0px)), -18px, 0) scale(1.05);
+  }
+}
+
+.milestone.is-counted .milestone__value {
+  color: var(--jwp-color-navy);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-hero__staff span,
+  .value-card,
+  .timeline__marker,
+  .timeline__notes i,
+  .value-card__notes i {
+    animation: none;
+    transition: none;
+  }
+
+  .value-card:hover,
+  .value-card:focus-visible {
+    transform: none;
+  }
+}

@@ -1,0 +1,12 @@
+# Підключати лише після certbot (USE_HTTPS=true).
+# bash deploy/docker/deploy.sh читає USE_HTTPS з .env.
+services:
+  nginx:
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx/docker.prod.conf:/etc/nginx/conf.d/default.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - static_volume:/app/staticfiles:ro
+      - media_volume:/app/media:ro

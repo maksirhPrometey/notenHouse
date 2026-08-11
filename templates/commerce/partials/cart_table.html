@@ -1,0 +1,6 @@
+{% if items %}
+{# Legacy partial kept for backwards compatibility; HTMX uses cart_content. #}
+{% include "commerce/partials/cart_content.html" %}
+{% else %}
+{% include "commerce/partials/cart_empty.html" %}
+{% endif %}

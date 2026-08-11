@@ -1,0 +1,14 @@
+{% load catalog_tags %}
+<div class="cart-empty" data-cart-state="empty">
+  <div class="cart-empty__alert" role="status">
+    <p class="cart-empty__title">{% loc cart_settings 'empty_title' %}</p>
+    <p class="cart-empty__text">{% loc cart_settings 'empty_text' %}</p>
+  </div>
+
+  <a
+    class="btn cart__btn-navy cart-empty__continue"
+    href="{% url 'catalog:katalog' %}"
+  >{% loc cart_settings 'continue_shopping_label' %}</a>
+
+  {% include "commerce/partials/cart_recommend.html" %}
+</div>

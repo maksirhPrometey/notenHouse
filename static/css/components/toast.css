@@ -1,0 +1,196 @@
+/* NotenHaus — toast notifications (iOS Safari safe-area) */
+
+.toasts {
+  position: fixed;
+  z-index: 300;
+  /* below sticky header — avoid covering logo / tools */
+  top: calc(env(safe-area-inset-top, 0px) + 4.75rem);
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+  padding:
+    0.75rem
+    max(0.75rem, env(safe-area-inset-right, 0px))
+    0
+    max(0.75rem, env(safe-area-inset-left, 0px));
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 22rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0.75rem 1rem;
+  border-radius: 2px;
+  border: 1px solid var(--color-border);
+  background: var(--jwp-color-neutral-0);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.35;
+  box-shadow: 0 4px 16px rgba(28, 28, 28, 0.12);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 280ms ease, transform 280ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.toast.is-leaving {
+  opacity: 0;
+  transform: translateY(-0.5rem);
+}
+
+.toast--success {
+  border-color: var(--jwp-color-maroon);
+  background: var(--jwp-color-tan);
+  color: var(--jwp-color-maroon-dark);
+}
+
+.toast--error {
+  border-color: var(--jwp-color-crimson);
+  background: #f8ecee;
+  color: var(--jwp-color-crimson);
+}
+
+.toast--warning {
+  border-color: var(--jwp-color-brown);
+  background: var(--jwp-color-tan);
+  color: var(--jwp-color-brown);
+}
+
+.toast--info {
+  border-color: var(--jwp-color-border-blue-grey);
+  background: var(--jwp-color-background-grey);
+  color: var(--jwp-text-color-secondary);
+}
+
+/* Inline toast near add-to-cart button */
+.product-card__actions,
+.product-card__cart-form,
+.pdp__cart-action,
+.pdp__actions {
+  position: relative;
+  overflow: visible;
+}
+
+.product-grid__item:has(.cart-toast),
+.pdp__cart-action:has(.cart-toast) {
+  position: relative;
+  z-index: 8;
+}
+
+.product-card__cart-form:has(> .cart-toast),
+.pdp__cart-action:has(> .cart-toast) {
+  margin-bottom: 2.6rem;
+}
+
+.cart-toast {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 0.4rem);
+  bottom: auto;
+  z-index: 6;
+  padding: 0.45rem 0.65rem;
+  border-radius: 2px;
+  border: 1px solid var(--jwp-color-maroon);
+  background: var(--jwp-color-tan);
+  color: var(--jwp-color-maroon-dark);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(28, 28, 28, 0.14);
+  pointer-events: none;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 280ms ease, transform 280ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cart-toast.is-leaving {
+  opacity: 0;
+  transform: translateY(-0.35rem);
+}
+
+.cart-toast--success {
+  border-color: var(--jwp-color-maroon);
+  background: var(--jwp-color-tan);
+  color: var(--jwp-color-maroon-dark);
+}
+
+.cart-toast--error {
+  border-color: var(--jwp-color-crimson);
+  background: #f8ecee;
+  color: var(--jwp-color-crimson);
+}
+
+.cart-toast--warning {
+  border-color: var(--jwp-color-brown);
+  background: var(--jwp-color-tan);
+  color: var(--jwp-color-brown);
+}
+
+.cart-toast--info {
+  border-color: var(--jwp-color-border-blue-grey);
+  background: var(--jwp-color-background-grey);
+  color: var(--jwp-text-color-secondary);
+}
+
+@media (min-width: 768px) {
+  .toasts {
+    top: calc(env(safe-area-inset-top, 0px) + 7.5rem);
+    align-items: flex-end;
+    padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
+    padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
+  }
+
+  .toast {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .cart-toast {
+    font-size: 0.82rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .toasts {
+    top: calc(env(safe-area-inset-top, 0px) + 8.25rem);
+  }
+}
+
+@media (max-width: 479px) {
+  .cart-toast {
+    font-size: 0.72rem;
+    padding: 0.4rem 0.55rem;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  .cart-toast {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast,
+  .cart-toast {
+    transition: none;
+  }
+
+  .toast.is-leaving,
+  .cart-toast.is-leaving {
+    transform: none;
+  }
+}

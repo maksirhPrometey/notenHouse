@@ -1,0 +1,15 @@
+services:
+  db:
+    restart: always
+
+  web:
+    restart: always
+    env_file:
+      - .env
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.docker
+
+  nginx:
+    restart: always
+    ports:
+      - "${HTTP_PORT:-80}:80"

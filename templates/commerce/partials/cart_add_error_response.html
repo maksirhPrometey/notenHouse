@@ -1,0 +1,20 @@
+{% include "commerce/partials/cart_badge.html" %}
+{% if toast_text %}
+<div hx-swap-oob="beforeend:#cart-action-{{ product_id }}">
+  <div
+    class="cart-toast cart-toast--{{ toast_level|default:'error' }}"
+    data-toast
+    role="status"
+  >{{ toast_text }}</div>
+</div>
+{% else %}
+{% for message in messages %}
+<div hx-swap-oob="beforeend:#cart-action-{{ product_id }}">
+  <div
+    class="cart-toast cart-toast--{{ message.level_tag|default:'error' }}"
+    data-toast
+    role="status"
+  >{{ message }}</div>
+</div>
+{% endfor %}
+{% endif %}

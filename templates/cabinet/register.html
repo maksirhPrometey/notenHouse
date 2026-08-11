@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static site_content %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/cabinet.css' %}?v={{ static_version }}">
+{% endblock %}
+
+{% block content %}
+<section class="cabinet-auth container">
+  <div class="cabinet-auth__card">
+    <h1>{% block_plain 'cabinet' 'register_title' %}</h1>
+    <form method="post" class="cabinet-auth__form" novalidate data-register-form>
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.GET.next }}">
+      {% if form.non_field_errors %}
+      <div class="form-errors">{{ form.non_field_errors }}</div>
+      {% endif %}
+      {% for field in form %}
+      <div class="form-field{% if field.errors %} is-invalid{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        <div class="invalid-feedback" data-field="{{ field.name }}">{% if field.errors %}{{ field.errors.0 }}{% endif %}</div>
+      </div>
+      {% endfor %}
+      <button type="submit" class="btn">Створити акаунт</button>
+    </form>
+    <p class="cabinet-auth__switch">
+      Вже маєте акаунт?
+      <a href="{% url 'cabinet:login' %}{% if request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}">Увійти</a>
+    </p>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/form_validation.js' %}?v={{ static_version }}" defer></script>
+<script src="{% static 'js/register.js' %}?v={{ static_version }}" defer></script>
+{% endblock %}

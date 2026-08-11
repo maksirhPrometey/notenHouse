@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% load static catalog_tags site_content %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/search.css' %}?v={{ static_version }}">
+{% endblock %}
+
+{% block content %}
+<section class="search-page container" data-search-page>
+  {% include "partials/breadcrumbs.html" %}
+
+  <header class="search-page__head">
+    {% if q %}
+    <h1 class="search-page__title">
+      {% block_plain 'search' 'results_prefix' %}: <span class="search-page__query">«{{ q }}»</span>
+    </h1>
+    {% if not empty %}
+    <p class="search-page__count" aria-live="polite">
+      <span class="search-page__count-badge">
+        {% block_plain 'search' 'found' %} {{ page_obj.paginator.count }}
+        {% if current_locale == 'en' %}
+          {% if page_obj.paginator.count == 1 %}item{% else %}items{% endif %}
+        {% else %}
+          {% if page_obj.paginator.count == 1 %}товар{% else %}товарів{% endif %}
+        {% endif %}
+      </span>
+    </p>
+    {% endif %}
+    {% else %}
+    <h1 class="search-page__title">{% block_plain 'search' 'title' %}</h1>
+    <p class="search-page__lead">{% block_plain 'search' 'lead' %}</p>
+    {% endif %}
+  </header>
+
+  <form
+    class="search-refine"
+    method="get"
+    action="{% url 'catalog:search' %}"
+    role="search"
+    data-search-refine
+  >
+    <div class="search-input-wrapper">
+      <span class="search-input-wrapper__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="M20 20l-3.5-3.5"></path>
+        </svg>
+      </span>
+      <label class="visually-hidden" for="search-q">{% block_plain 'search' 'title' %}</label>
+      <input
+        id="search-q"
+        class="search-input-wrapper__input"
+        type="search"
+        name="q"
+        value="{{ q }}"
+        placeholder="{% block_plain 'search' 'placeholder' %}"
+        autocomplete="off"
+        enterkeyhint="search"
+        required
+        data-search-input
+      >
+      <button
+        type="button"
+        class="search-input-wrapper__clear{% if not q %} is-hidden{% endif %}"
+        aria-label="{% block_plain 'search' 'clear' %}"
+        data-search-clear
+      >✕</button>
+      <button type="submit" class="btn btn--cta search-refine__submit">{% block_plain 'search' 'submit' %}</button>
+    </div>
+
+  </form>
+
+  {% if q %}
+    {% if empty %}
+    <div class="search-empty" role="status">
+      <div class="search-empty__icon" aria-hidden="true">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <ellipse cx="24" cy="38" rx="10" ry="4" fill="currentColor" opacity="0.15"/>
+          <path
+            d="M18 10c0-2 1.5-3.5 3.5-3.5S25 8 25 10v18.2a6 6 0 1 0 3 5.2V14l8-2.2V28a6 6 0 1 0 3 5.2V8.5L25 11.2V10z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+      <h2 class="search-empty__title">
+        {% block_plain 'search' 'empty_title' %} — «{{ q }}»
+      </h2>
+      <p class="search-empty__text">{% block_plain 'search' 'empty_text' %}</p>
+      <ul class="search-empty__tips">
+        {% if current_locale == 'en' %}
+        <li>Check the spelling of the composer or title</li>
+        <li>Try searching by instrument (for example, “Piano”)</li>
+        <li>Check the SKU — search also works by product code</li>
+        {% else %}
+        <li>Перевірте правильність написання композитора або назви</li>
+        <li>Спробуйте шукати за інструментом (наприклад, «Фортепіано»)</li>
+        <li>Перевірте артикул — пошук працює і за кодом товару</li>
+        {% endif %}
+      </ul>
+      <p class="search-empty__actions">
+        <a class="btn btn--cta" href="{% url 'catalog:katalog' %}">{% block_plain 'search' 'to_catalog' %}</a>
+      </p>
+    </div>
+    {% else %}
+    <div class="search-results">
+      {% product_grid_cols page_obj as result_cols %}
+      {% include "catalog/partials/product_grid.html" with products=page_obj grid_cols=result_cols %}
+
+      {% if page_obj.has_other_pages %}
+      <nav class="search-pagination" aria-label="{% block_plain 'catalog' 'pagination_pages' %}">
+        {% if page_obj.has_previous %}
+        <a
+          class="search-pagination__link"
+          href="?q={{ q|urlencode }}&page={{ page_obj.previous_page_number }}"
+        >← {% block_plain 'catalog' 'pagination_prev' %}</a>
+        {% endif %}
+        <span class="search-pagination__status">
+          {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+        </span>
+        {% if page_obj.has_next %}
+        <a
+          class="search-pagination__link"
+          href="?q={{ q|urlencode }}&page={{ page_obj.next_page_number }}"
+        >{% block_plain 'catalog' 'pagination_next' %} →</a>
+        {% endif %}
+      </nav>
+      {% endif %}
+    </div>
+    {% endif %}
+  {% endif %}
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/search.js' %}" defer></script>
+{% endblock %}

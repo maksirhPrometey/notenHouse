@@ -1,0 +1,9 @@
+{% for message in messages %}
+<div hx-swap-oob="beforeend:#toasts">
+  <div
+    class="toast toast--{{ message.tags|default:'info' }}"
+    data-toast
+    role="status"
+  >{{ message }}</div>
+</div>
+{% endfor %}

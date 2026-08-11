@@ -1,0 +1,54 @@
+{% load site_content %}
+<section
+  class="checkout-card checkout-step"
+  data-checkout-step="contact"
+  aria-labelledby="checkout-contact-title"
+>
+  <header class="checkout-step__head">
+    <span class="checkout-step__num" aria-hidden="true">1</span>
+    <h2 id="checkout-contact-title" class="checkout-step__title">
+      {% block_plain 'checkout' 'contact_heading' %}
+    </h2>
+    <span class="checkout-step__check" data-step-check hidden aria-hidden="true">✓</span>
+  </header>
+
+  {% if logged_in_label %}
+  <p class="checkout-logged" role="status">
+    <span class="checkout-logged__mark" aria-hidden="true">✓</span>
+    {{ logged_in_label }}
+  </p>
+  {% endif %}
+
+  <div class="checkout-grid">
+    <div class="form-field{% if form.customer_name.errors %} is-invalid{% endif %}">
+      <label for="{{ form.customer_name.id_for_label }}">{{ form.customer_name.label }}</label>
+      {{ form.customer_name }}
+      {% if form.customer_name.errors %}
+      <div class="invalid-feedback" data-field-error>{{ form.customer_name.errors.0 }}</div>
+      {% else %}
+      <div class="invalid-feedback" data-field-error hidden></div>
+      {% endif %}
+    </div>
+
+    <div class="form-field{% if form.customer_phone.errors %} is-invalid{% endif %}">
+      <label for="{{ form.customer_phone.id_for_label }}">{{ form.customer_phone.label }}</label>
+      {{ form.customer_phone }}
+      {% if form.customer_phone.errors %}
+      <div class="invalid-feedback" data-field-error>{{ form.customer_phone.errors.0 }}</div>
+      {% else %}
+      <div class="invalid-feedback" data-field-error hidden></div>
+      {% endif %}
+    </div>
+
+    <div class="form-field form-field--full{% if form.customer_email.errors %} is-invalid{% endif %}">
+      <label for="{{ form.customer_email.id_for_label }}">{{ form.customer_email.label }}</label>
+      {{ form.customer_email }}
+      <p class="checkout-hint">{% block_plain 'checkout' 'email_hint' %}</p>
+      {% if form.customer_email.errors %}
+      <div class="invalid-feedback" data-field-error>{{ form.customer_email.errors.0 }}</div>
+      {% else %}
+      <div class="invalid-feedback" data-field-error hidden></div>
+      {% endif %}
+    </div>
+  </div>
+</section>

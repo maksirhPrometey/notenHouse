@@ -1,0 +1,15 @@
+{% load site_content %}
+{% include "commerce/partials/cart_badge.html" %}
+<div id="cart-action-{{ product_id }}" class="{{ wrapper_class }}">
+  <a
+    href="{% url 'commerce:cart' %}"
+    class="btn btn--ghost {{ btn_class }}"
+  >{% block_plain 'catalog' 'in_cart' %}</a>
+  {% if toast_text %}
+  <div
+    class="cart-toast cart-toast--{{ toast_level|default:'success' }}"
+    data-toast
+    role="status"
+  >{{ toast_text }}</div>
+  {% endif %}
+</div>

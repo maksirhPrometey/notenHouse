@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+{% load static catalog_tags site_content %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/pdp.css' %}?v={{ static_version }}">
+<link rel="stylesheet" href="{% static 'css/pages/pdp-2.css' %}?v={{ static_version }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  {% include "partials/breadcrumbs.html" %}
+</div>
+
+{% loc product as product_name %}
+{% loc product 'description' as product_description %}
+<article class="pdp container" data-pdp>
+  <div class="pdp__hero">
+    <div class="pdp__media">
+      {% with images=product.images.all %}
+      <div class="pdp__gallery"{% if images %} data-pdp-gallery{% endif %}>
+        <div class="pdp__viewport">
+          {% if images %}
+            {% for image in images|dictsortreversed:"is_main" %}
+              {% if forloop.first %}
+              {% loc image 'alt' as image_alt %}
+              <button
+                type="button"
+                class="pdp__cover-btn"
+                data-pdp-zoom
+                data-src="{{ image.image.url }}"
+                data-alt="{{ image_alt|default:product_name }}"
+                aria-label="{{ product_name }}"
+              >
+                <img
+                  class="pdp__cover"
+                  src="{{ image.image.url }}"
+                  alt="{{ image_alt|default:product_name }}"
+                  width="640"
+                  height="900"
+                  decoding="async"
+                  data-pdp-main
+                >
+              </button>
+              {% endif %}
+            {% endfor %}
+            {% if product.badge_text %}
+            <span class="pdp__badge pdp__badge--{{ product.badge_tone|default:'yellow' }}" aria-hidden="true">
+              {{ product.badge_text }}
+            </span>
+            {% endif %}
+          {% else %}
+            <div class="pdp__cover-placeholder" aria-hidden="true"></div>
+          {% endif %}
+        </div>
+
+        {% if images|length > 1 %}
+        <ul class="pdp__thumbs" role="list">
+          {% for image in images %}
+          {% loc image 'alt' as thumb_alt %}
+          <li>
+            <button
+              type="button"
+              class="pdp__thumb{% if image.is_main %} is-active{% endif %}"
+              data-pdp-thumb
+              data-src="{{ image.image.url }}"
+              data-alt="{{ thumb_alt|default:product_name }}"
+              aria-label="{{ thumb_alt|default:product_name }}"
+              aria-pressed="{% if image.is_main %}true{% else %}false{% endif %}"
+            >
+              <img
+                src="{{ image.image.url }}"
+                alt=""
+                width="96"
+                height="128"
+                loading="lazy"
+                decoding="async"
+              >
+            </button>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+      {% endwith %}
+
+      {% with files=product.files.all %}
+      {% if files %}
+      <ul class="pdp__previews" role="list">
+        {% for file in files %}
+        <li>
+          <a
+            class="pdp__preview-link"
+            href="{{ file.file.url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {% block_plain 'catalog' 'preview_label' %}
+            <span class="pdp__preview-icon" aria-hidden="true">↗</span>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+    </div>
+
+    <div class="pdp__info">
+      <header class="pdp__header">
+        <h1 class="pdp__title">{{ product_name }}</h1>
+        {% if product.composer %}
+        <p class="pdp__composer">
+          {% block_plain 'catalog' 'composer_label' %}:
+          <a href="{% url 'catalog:katalog' %}?composer={{ product.composer.slug }}">{% loc product.composer %}</a>
+        </p>
+        {% endif %}
+      </header>
+
+      <p class="pdp__price">
+        <span class="pdp__price-value">{{ product.price_uah }}</span>
+        <span class="pdp__price-currency">{% block_plain 'catalog' 'currency_uah' %}</span>
+      </p>
+
+      <p class="pdp__stock{% if product.is_in_stock %} pdp__stock--in{% else %} pdp__stock--out{% endif %}">
+        <span class="pdp__stock-dot" aria-hidden="true"></span>
+        {% if product.is_in_stock %}
+          {% block_plain 'catalog' 'in_stock' %}
+        {% else %}
+          {% block_plain 'catalog' 'out_of_stock' %}
+        {% endif %}
+      </p>
+
+      {% with instruments=product.instruments.all %}
+      {% if product.format or product.level or instruments %}
+      <dl class="pdp__specs">
+        {% if product.format %}
+        <div class="pdp__spec">
+          <dt>{% block_plain 'catalog' 'format_label' %}</dt>
+          <dd>{% loc product.format %}</dd>
+        </div>
+        {% endif %}
+        {% for inst in instruments %}
+        <div class="pdp__spec">
+          <dt>{% block_plain 'catalog' 'instrument_label' %}</dt>
+          <dd>{% loc inst %}</dd>
+        </div>
+        {% endfor %}
+        {% if product.level %}
+        <div class="pdp__spec">
+          <dt>{% block_plain 'catalog' 'level_label' %}</dt>
+          <dd>{% loc product.level %}</dd>
+        </div>
+        {% endif %}
+      </dl>
+      {% endif %}
+      {% endwith %}
+
+      <div class="pdp__actions">
+        {% if product.is_in_stock %}
+          {% if product.id in cart_product_ids %}
+          <div id="cart-action-{{ product.id }}" class="pdp__cart-action">
+            <a href="{% url 'commerce:cart' %}" class="btn btn--ghost pdp__cart-btn">
+              {% block_plain 'catalog' 'in_cart' %}
+            </a>
+          </div>
+          {% else %}
+          <div id="cart-action-{{ product.id }}" class="pdp__cart-action">
+            <form
+              class="pdp__cart-form"
+              method="post"
+              action="{% url 'commerce:cart_add' product.id %}"
+              hx-post="{% url 'commerce:cart_add' product.id %}"
+              hx-target="#cart-action-{{ product.id }}"
+              hx-swap="outerHTML"
+              data-pdp-cart-form
+            >
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.path }}">
+              <input type="hidden" name="wrapper_class" value="pdp__cart-action">
+              <input type="hidden" name="btn_class" value="pdp__cart-btn">
+
+              <div class="pdp__qty" data-pdp-qty>
+                <span class="pdp__qty-label" id="pdp-qty-label-{{ product.id }}">
+                  {% block_plain 'catalog' 'qty_label' %}
+                </span>
+                <div class="pdp__qty-control" role="group" aria-labelledby="pdp-qty-label-{{ product.id }}">
+                  <button type="button" class="pdp__qty-btn" data-pdp-qty-dec aria-label="−">−</button>
+                  <input
+                    class="pdp__qty-input"
+                    type="number"
+                    name="qty"
+                    value="1"
+                    min="1"
+                    max="{{ product.stock_qty }}"
+                    inputmode="numeric"
+                    aria-labelledby="pdp-qty-label-{{ product.id }}"
+                  >
+                  <button type="button" class="pdp__qty-btn" data-pdp-qty-inc aria-label="+">+</button>
+                </div>
+              </div>
+
+              <button type="submit" class="btn pdp__cart-btn">
+                {% block_plain 'catalog' 'add_to_cart' %}
+              </button>
+            </form>
+          </div>
+          {% endif %}
+        {% endif %}
+
+        {% include "cabinet/partials/wishlist_button.html" with product=product is_wishlisted=is_wishlisted %}
+      </div>
+    </div>
+  </div>
+
+  {% if product_description %}
+  <section class="pdp__details" aria-labelledby="pdp-desc-heading">
+    <h2 class="pdp__details-title" id="pdp-desc-heading">
+      {% if LANGUAGE_CODE == 'en' %}Description{% else %}Опис{% endif %}
+    </h2>
+    <div class="pdp__desc">{{ product_description|linebreaks }}</div>
+  </section>
+  {% endif %}
+</article>
+
+<dialog class="pdp-lightbox" data-pdp-lightbox aria-label="{{ product_name }}">
+  <div class="pdp-lightbox__panel">
+    <button type="button" class="pdp-lightbox__close" data-pdp-lightbox-close aria-label="×">×</button>
+    <img class="pdp-lightbox__img" data-pdp-lightbox-img src="" alt="">
+  </div>
+</dialog>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/pdp.js' %}" defer></script>
+{% endblock %}

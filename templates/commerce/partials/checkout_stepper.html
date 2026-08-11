@@ -1,0 +1,27 @@
+{% load site_content %}
+<nav class="checkout-stepper" aria-label="{% block_plain 'checkout' 'stepper_aria' %}">
+  <ol class="checkout-stepper__list">
+    <li class="checkout-stepper__item checkout-stepper__item--done">
+      <span class="checkout-stepper__mark" aria-hidden="true">✓</span>
+      <span class="checkout-stepper__label">
+        <span class="checkout-stepper__num">1.</span>
+        {% block_plain 'checkout' 'step_cart' %}
+      </span>
+      <span class="checkout-stepper__note" aria-hidden="true">♪</span>
+    </li>
+    <li class="checkout-stepper__item checkout-stepper__item--active" aria-current="step">
+      <span class="checkout-stepper__dot" aria-hidden="true"></span>
+      <span class="checkout-stepper__label">
+        <span class="checkout-stepper__num">2.</span>
+        {% block_plain 'checkout' 'step_checkout' %}
+      </span>
+    </li>
+    <li class="checkout-stepper__item">
+      <span class="checkout-stepper__mark checkout-stepper__mark--muted" aria-hidden="true">3</span>
+      <span class="checkout-stepper__label">
+        <span class="checkout-stepper__num">3.</span>
+        {% block_plain 'checkout' 'step_pay' %}
+      </span>
+    </li>
+  </ol>
+</nav>

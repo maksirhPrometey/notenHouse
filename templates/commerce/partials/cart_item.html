@@ -1,0 +1,103 @@
+{% load site_content catalog_tags %}
+{% with product=item.product %}
+{% loc product as product_name %}
+<li class="cart-item" data-cart-item data-item-id="{{ item.id }}">
+  <a class="cart-item__cover" href="{% url 'catalog:nota_detail' product.slug %}">
+    {% with img=product.main_images.0 %}
+      {% if img %}
+      {% loc img 'alt' as img_alt %}
+      <img
+        src="{{ img.image.url }}"
+        alt="{{ img_alt|default:product_name }}"
+        width="96"
+        height="128"
+        loading="lazy"
+        decoding="async"
+      >
+      {% else %}
+      <span class="cart-item__cover-ph" aria-hidden="true"></span>
+      {% endif %}
+    {% endwith %}
+  </a>
+
+  <div class="cart-item__body">
+    <div class="cart-item__meta">
+      <h2 class="cart-item__title">
+        <a href="{% url 'catalog:nota_detail' product.slug %}">{{ product_name }}</a>
+      </h2>
+      {% if product.composer %}
+      <p class="cart-item__composer">{% loc product.composer %}</p>
+      {% endif %}
+      {% if product.format %}
+      <p class="cart-item__format">{% loc product.format %}</p>
+      {% endif %}
+      {% if product.is_in_stock %}
+      <span class="cart-item__stock cart-item__stock--ok">{% block_plain 'catalog' 'in_stock' %}</span>
+      {% else %}
+      <span class="cart-item__stock cart-item__stock--out">{% block_plain 'catalog' 'out_of_stock' %}</span>
+      {% endif %}
+    </div>
+
+    <div class="cart-item__controls">
+      <div class="cart-qty" data-cart-qty>
+        <form
+          class="cart-qty__form"
+          method="post"
+          action="{% url 'commerce:cart_update' item.id %}"
+          hx-post="{% url 'commerce:cart_update' item.id %}"
+          hx-target="#cart-root"
+          hx-swap="innerHTML"
+          data-cart-qty-form
+        >
+          {% csrf_token %}
+          <input type="hidden" name="qty" value="{{ item.qty }}" data-cart-qty-input>
+          <button
+            type="button"
+            class="cart-qty__btn"
+            data-cart-qty-dec
+            aria-label="{% if current_locale == 'en' %}Decrease quantity{% else %}Зменшити кількість{% endif %}"
+            {% if item.qty <= 1 %}disabled{% endif %}
+          >−</button>
+          <span class="cart-qty__value" data-cart-qty-display aria-live="polite">{{ item.qty }}</span>
+          <button
+            type="button"
+            class="cart-qty__btn"
+            data-cart-qty-inc
+            aria-label="{% if current_locale == 'en' %}Increase quantity{% else %}Збільшити кількість{% endif %}"
+            {% if item.qty >= product.stock_qty %}disabled{% endif %}
+          >+</button>
+        </form>
+      </div>
+
+      <div class="cart-item__prices">
+        <p class="cart-item__unit">
+          {{ item.unit_price_uah }}&nbsp;₴ / {% block_plain 'cart' 'qty_unit' %}
+          <span class="visually-hidden">{% block_plain 'catalog' 'qty_label' %}:</span>
+          <strong class="cart-item__qty-mult" data-cart-line-total>×&nbsp;{{ item.qty }}</strong>
+        </p>
+      </div>
+    </div>
+
+    <div class="cart-item__actions">
+      <form
+        method="post"
+        action="{% url 'commerce:cart_remove' item.id %}"
+        hx-post="{% url 'commerce:cart_remove' item.id %}"
+        hx-target="#cart-root"
+        hx-swap="innerHTML swap:280ms"
+        data-cart-remove-form
+      >
+        {% csrf_token %}
+        <button type="submit" class="cart-item__remove" data-cart-remove>
+          <span class="cart-item__remove-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M4 7h16M9 7V5h6v2m-7 3v8m4-8v8m4-8v8M6 7l1 14h10l1-14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          {% block_plain 'cart' 'remove_label' %}
+        </button>
+      </form>
+    </div>
+  </div>
+</li>
+{% endwith %}

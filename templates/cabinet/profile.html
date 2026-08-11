@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/cabinet.css' %}?v={{ static_version }}">
+{% endblock %}
+
+{% block content %}
+<section class="cabinet cabinet--studio container">
+  {% include "partials/breadcrumbs.html" %}
+  {% include "cabinet/partials/nav.html" with active="profile" %}
+
+  <div class="cabinet__content studio">
+    <header class="studio-page-head">
+      <h1>Профіль</h1>
+      <p class="studio-page-head__sub">Особисті дані та безпека акаунту</p>
+    </header>
+
+    <div class="studio-profile-grid">
+      <section class="studio-panel" aria-labelledby="profile-data-heading">
+        <h2 id="profile-data-heading">Дані профілю</h2>
+        <form method="post" class="cabinet-form" novalidate>
+          {% csrf_token %}
+          <div class="form-field">
+            <label>Email</label>
+            <input type="email" value="{{ request.user.email }}" class="form-control" disabled>
+          </div>
+          {% for field in profile_form %}
+          <div class="form-field">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}<div class="invalid-feedback">{{ field.errors.0 }}</div>{% endif %}
+          </div>
+          {% endfor %}
+          <button type="submit" name="save_profile" value="1" class="btn">Зберегти</button>
+        </form>
+      </section>
+
+      <section class="studio-panel" aria-labelledby="profile-password-heading">
+        <h2 id="profile-password-heading">Зміна пароля</h2>
+        <form method="post" class="cabinet-form" novalidate>
+          {% csrf_token %}
+          {% if password_form.non_field_errors %}
+          <div class="form-errors">{{ password_form.non_field_errors }}</div>
+          {% endif %}
+          {% for field in password_form %}
+          <div class="form-field">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}<div class="invalid-feedback">{{ field.errors.0 }}</div>{% endif %}
+          </div>
+          {% endfor %}
+          <button type="submit" name="change_password" value="1" class="btn">Змінити пароль</button>
+        </form>
+      </section>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,83 @@
+/* NotenHaus — shared page styles (catalog, cart, forms, PDP) */
+
+.catalog,
+.cart,
+.checkout,
+.contacts,
+.shipping,
+.search,
+.content-page {
+  padding: 1.25rem 0 2rem;
+}
+
+.form-field {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
+}
+
+.form-control,
+.cart-table input[type="number"],
+.np-block input {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+  font: inherit;
+  background: var(--color-surface);
+  color: var(--color-text-body);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.invalid-feedback,
+.form-errors {
+  color: var(--color-error);
+  font-size: 0.9rem;
+  min-height: 1.1rem;
+}
+
+.form-control.is-invalid,
+.form-field.is-invalid .form-control {
+  border-color: var(--color-error);
+}
+
+.form-success {
+  color: var(--color-success);
+}
+
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cart-table th,
+.cart-table td {
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.np-results {
+  list-style: none;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  border: 1px solid var(--color-border);
+}
+
+.np-results:empty {
+  display: none;
+}
+
+.np-results button {
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.65rem;
+  border: 0;
+  background: var(--color-surface);
+  font: inherit;
+  cursor: pointer;
+}
+

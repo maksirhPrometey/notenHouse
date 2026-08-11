@@ -1,0 +1,167 @@
+/* NotenHaus — custom dropdown (заміна нативного macOS/iOS select) */
+
+.custom-dropdown {
+  position: relative;
+  width: min(100%, 16rem);
+}
+
+.custom-dropdown--full {
+  width: 100%;
+  max-width: none;
+}
+
+.custom-dropdown__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.55rem 0.75rem;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.25;
+  font-weight: 400;
+  color: var(--color-text-body);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.custom-dropdown__trigger:hover {
+  border-color: var(--color-brand);
+}
+
+.custom-dropdown__trigger:focus-visible {
+  outline: none;
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px var(--color-focus);
+}
+
+.custom-dropdown__label {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.custom-dropdown__chevron {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-text-muted);
+  transition: transform 200ms ease;
+}
+
+.custom-dropdown.is-open .custom-dropdown__chevron {
+  transform: rotate(180deg);
+}
+
+.custom-dropdown__menu {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  z-index: 40;
+  max-height: min(18rem, 50vh);
+  margin: 0;
+  padding: 0.25rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  list-style: none;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+  box-shadow: 0 8px 24px rgba(28, 28, 28, 0.12);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-0.25rem) scale(0.98);
+  transform-origin: top center;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    visibility 180ms ease;
+}
+
+.custom-dropdown.is-open .custom-dropdown__menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.custom-dropdown__option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.75rem;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.25;
+  color: var(--color-text-body);
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: 2px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.custom-dropdown__option:hover,
+.custom-dropdown__option:focus-visible {
+  background: var(--color-bg-muted);
+  color: var(--color-text);
+  outline: none;
+}
+
+.custom-dropdown__option.is-selected {
+  font-weight: 600;
+  color: var(--color-brand);
+}
+
+.custom-dropdown__option-dot {
+  flex-shrink: 0;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.custom-dropdown__option.is-selected .custom-dropdown__option-dot {
+  background: var(--color-brand);
+}
+
+.custom-dropdown__option-label {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .custom-dropdown:not(.custom-dropdown--full) {
+    width: auto;
+    min-width: 12.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .custom-dropdown:not(.custom-dropdown--full) {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-dropdown__trigger,
+  .custom-dropdown__chevron,
+  .custom-dropdown__menu,
+  .custom-dropdown__option {
+    transition: none;
+  }
+}

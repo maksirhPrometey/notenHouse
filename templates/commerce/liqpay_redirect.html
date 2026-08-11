@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static site_content %}
+
+{% block content %}
+<section>
+  <h1>{% block_plain 'checkout' 'liqpay_redirect_title' %}</h1>
+  <p>{% if current_locale == 'en' %}Order{% else %}Замовлення{% endif %} {{ order.number }}. {% block_plain 'checkout' 'liqpay_redirect_text' %}</p>
+  <form id="liqpay-form" method="post" action="{{ pay.action }}">
+    <input type="hidden" name="data" value="{{ pay.data }}">
+    <input type="hidden" name="signature" value="{{ pay.signature }}">
+    <button type="submit" class="btn">{% if current_locale == 'en' %}Pay now{% else %}Оплатити зараз{% endif %}</button>
+  </form>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/liqpay_auto.js' %}" defer></script>
+{% endblock %}

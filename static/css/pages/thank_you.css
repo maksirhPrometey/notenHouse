@@ -1,0 +1,97 @@
+/* NotenHaus — thank-you + offline payment instructions */
+
+.thank-you {
+  padding: 1.5rem 0 3rem;
+}
+
+.thank-you__inner {
+  max-width: 40rem;
+}
+
+.thank-you__title {
+  margin: 0 0 1rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  line-height: 1.2;
+  color: var(--jwp-color-text-body, #1a1a1a);
+}
+
+.thank-you__meta {
+  margin: 0 0 0.5rem;
+  color: var(--color-text-muted, #5c5c5c);
+}
+
+.thank-you-card {
+  margin: 1.5rem 0;
+  padding: 1.15rem 1.2rem;
+  border: 1px solid var(--color-border, #e2e2e2);
+  border-radius: 10px;
+  background: var(--jwp-color-neutral-1, #f7f5f3);
+}
+
+.thank-you-card__title {
+  margin: 0 0 0.65rem;
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+
+.thank-you-card__text,
+.thank-you-card__amount,
+.thank-you-card__note {
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
+}
+
+.thank-you-card__note {
+  color: var(--color-text-muted, #5c5c5c);
+}
+
+.thank-you-iban {
+  margin: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.thank-you-iban__row {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.thank-you-iban__row dt {
+  font-size: 0.8rem;
+  color: var(--color-text-muted, #5c5c5c);
+}
+
+.thank-you-iban__row dd {
+  margin: 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.thank-you-iban__row code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.95rem;
+}
+
+.thank-you__actions {
+  margin: 1.5rem 0 0;
+}
+
+@media (min-width: 640px) {
+  .thank-you {
+    padding: 2rem 0 4rem;
+  }
+
+  .thank-you-iban__row {
+    grid-template-columns: 10rem 1fr;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  .thank-you-iban__row dd {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+}

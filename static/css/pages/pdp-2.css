@@ -1,0 +1,325 @@
+/* NotenHaus — PDP actions, details, lightbox, responsive */
+
+.pdp__actions {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.15rem;
+}
+
+.pdp__cart-action {
+  position: relative;
+  display: block;
+  max-width: 100%;
+}
+
+.pdp__cart-form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.pdp__qty {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.pdp__qty-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--jwp-color-dark-grey);
+}
+
+.pdp__qty-control {
+  display: inline-flex;
+  align-items: stretch;
+  width: fit-content;
+  max-width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+  background: var(--jwp-color-neutral-0);
+  overflow: hidden;
+}
+
+.pdp__qty-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  min-height: 2.75rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--jwp-color-neutral-1);
+  color: var(--color-text-body);
+  font: inherit;
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 140ms ease;
+}
+
+.pdp__qty-btn:hover,
+.pdp__qty-btn:focus-visible {
+  background: var(--jwp-color-neutral-2);
+  outline: none;
+}
+
+.pdp__qty-btn:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--color-focus);
+}
+
+.pdp__qty-input {
+  width: 3.25rem;
+  min-height: 2.75rem;
+  margin: 0;
+  padding: 0.35rem 0.25rem;
+  border: 0;
+  border-inline: 1px solid var(--color-border);
+  border-radius: 0;
+  background: var(--jwp-color-neutral-0);
+  color: var(--color-text-body);
+  font: inherit;
+  font-weight: 600;
+  text-align: center;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.pdp__qty-input::-webkit-outer-spin-button,
+.pdp__qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.pdp__qty-input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.pdp__cart-btn {
+  width: 100%;
+}
+
+.pdp__actions .wishlist-action {
+  margin-top: 0;
+}
+
+.pdp__actions .wishlist-btn {
+  width: 100%;
+}
+
+.pdp__actions .wishlist-btn--active .wishlist-btn__icon,
+.pdp__actions .wishlist-btn:hover .wishlist-btn__icon {
+  animation: pdpHeartPulse 700ms ease;
+}
+
+.pdp__details {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.pdp__details-title {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.2rem, 2.4vw, 1.45rem);
+  color: var(--jwp-color-navy);
+}
+
+.pdp__desc {
+  max-width: 46rem;
+  color: var(--color-text-body);
+  font-size: 1rem;
+}
+
+.pdp__desc p {
+  margin: 0 0 0.85rem;
+}
+
+.pdp__desc p:last-child {
+  margin-bottom: 0;
+}
+
+/* Lightbox — ТЗ: фото відкриваються */
+.pdp-lightbox {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  max-width: min(96vw, 42rem);
+  width: 100%;
+}
+
+.pdp-lightbox::backdrop {
+  background: rgba(23, 26, 28, 0.72);
+}
+
+.pdp-lightbox__panel {
+  position: relative;
+  margin: 0;
+  padding: 0.65rem;
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+  background: var(--jwp-color-neutral-0);
+  box-shadow: 0 12px 40px rgba(23, 26, 28, 0.28);
+}
+
+.pdp-lightbox__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(82dvh, 52rem);
+  object-fit: contain;
+  background: var(--jwp-color-neutral-1);
+}
+
+.pdp-lightbox__close {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+  background: var(--jwp-color-neutral-0);
+  color: var(--color-text-body);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pdp-lightbox__close:hover,
+.pdp-lightbox__close:focus-visible {
+  background: var(--jwp-color-neutral-1);
+  outline: none;
+}
+
+.pdp-lightbox__close:focus-visible {
+  box-shadow: 0 0 0 3px var(--color-focus);
+}
+
+@keyframes pdpHeartPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.18);
+  }
+  70% {
+    transform: scale(0.96);
+  }
+}
+
+@media (min-width: 768px) {
+  .pdp {
+    padding-bottom: 3.25rem;
+  }
+
+  .pdp__hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: stretch;
+  }
+
+  .pdp__media {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    align-self: stretch;
+  }
+
+  .pdp__gallery {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .pdp__viewport {
+    position: relative;
+    flex: 1 1 auto;
+    aspect-ratio: auto;
+    max-width: none;
+    margin-inline: 0;
+    min-height: 14rem;
+    align-self: stretch;
+  }
+
+  .pdp__cover-btn,
+  .pdp__cover-placeholder {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .pdp__cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .pdp__specs {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem 1rem;
+    padding: 1rem;
+  }
+
+  .pdp__cart-form {
+    grid-template-columns: auto 1fr;
+    align-items: end;
+  }
+
+  .pdp__qty {
+    align-self: end;
+  }
+
+  .pdp__actions .wishlist-btn {
+    width: auto;
+  }
+
+  .pdp__details {
+    margin-top: 2.5rem;
+    padding-top: 1.85rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .pdp__hero {
+    gap: 2.5rem;
+  }
+
+  .pdp__thumb {
+    width: 4rem;
+  }
+
+  .pdp__title {
+    font-size: clamp(1.85rem, 2.2vw, 2.35rem);
+  }
+}
+
+/* iOS Safari: safe areas + dvh dialog */
+@supports (padding: max(0px)) {
+  .pdp-lightbox__panel {
+    padding-bottom: max(0.65rem, env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdp__thumb,
+  .pdp__preview-link,
+  .pdp__qty-btn {
+    transition: none;
+  }
+
+  .pdp__actions .wishlist-btn--active .wishlist-btn__icon,
+  .pdp__actions .wishlist-btn:hover .wishlist-btn__icon {
+    animation: none;
+  }
+}
